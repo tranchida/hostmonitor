@@ -1,0 +1,13 @@
+{{ define "main" }}
+<h1>Host Information</h1>
+<ul>
+    <li>{{ template "currentTime" .CurrentTime }}</li>
+    <li><strong>Hostname:</strong> {{.Hostname}}:{{.Port}}</li>
+
+</ul>
+{{ end }}
+
+
+{{ block "currentTime" .}}
+<strong>Current time:</strong> {{ . }}
+{{ end }}
