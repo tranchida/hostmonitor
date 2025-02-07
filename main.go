@@ -4,13 +4,13 @@ import (
 	"embed"
 	"html/template"
 	"io"
-	"io/fs"
 	"net/http"
 	"os"
 	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/rs/zerolog"
 )
 
 type HostInfo struct {
@@ -22,35 +22,42 @@ type HostInfo struct {
 //go:embed static templates
 var contentFS embed.FS
 
-type templateRenderer struct {
+type Template struct {
 	templates *template.Template
 }
 
-func (t *templateRenderer) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
 	return t.templates.ExecuteTemplate(w, name, data)
 }
 
 func newEcho() (*echo.Echo, error) {
 
-	staticFS, err := fs.Sub(contentFS, "static")
-	if err != nil {
-		return nil, err
-	}
-
-	templates, err := template.ParseFS(contentFS, "templates/*")
-	if err != nil {
-		return nil, err
-	}
+	logger := zerolog.New(os.Stdout)
 
 	e := echo.New()
+	e.HideBanner = false
 
-	e.Renderer = &templateRenderer{templates: templates}
+	e.Renderer = &Template{
+		templates: template.Must(template.ParseFS(contentFS, "templates/*")),
+	}
 
-	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: "${time_rfc3339} ${method} ${uri} ${status} ${latency_human} ${bytes_out}\n",
+	e.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
+		LogURI:    true,
+		LogStatus: true,
+		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
+			logger.Info().
+				Str("URI", v.URI).
+				Int("status", v.Status).
+				Msg("request")
+
+			return nil
+		},
 	}))
 
-	e.GET("/*", echo.WrapHandler(http.FileServer(http.FS(staticFS))))
+	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		Root:       "static",
+		Filesystem: http.FS(contentFS),
+	}))
 
 	e.GET("/host", func(c echo.Context) error {
 		hostname, _ := os.Hostname()
@@ -75,7 +82,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	
+
 	if err := e.Start(":8080"); err != nil {
 		panic(err)
 	}
