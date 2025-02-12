@@ -9,10 +9,14 @@ import (
 	"os"
 	"time"
 
+	"github.com/dustin/go-humanize"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/rs/zerolog"
-	"github.com/shirou/gopsutil/v3/host"
+	"github.com/shirou/gopsutil/v4/cpu"
+	"github.com/shirou/gopsutil/v4/disk"
+	"github.com/shirou/gopsutil/v4/host"
+	"github.com/shirou/gopsutil/v4/mem"
+	"github.com/shirou/gopsutil/v4/sensors"
 )
 
 type HostInfo struct {
@@ -23,6 +27,14 @@ type HostInfo struct {
 	OS              string
 	Platform        string
 	PlatformVersion string
+	CPUP            int
+	CPUV            int
+	TotalMemory     string
+	CacheMemory     string
+	FreeMemory      string
+	TotalDiskSpace  string
+	FreeDiskSpace   string
+	CPUTemperature  string
 }
 
 //go:embed static templates
@@ -38,8 +50,6 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 
 func newEcho() (*echo.Echo, error) {
 
-	logger := zerolog.New(os.Stdout)
-
 	e := echo.New()
 	e.HideBanner = false
 
@@ -47,17 +57,26 @@ func newEcho() (*echo.Echo, error) {
 		templates: template.Must(template.ParseFS(contentFS, "templates/*")),
 	}
 
-	e.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
-		LogURI:    true,
-		LogStatus: true,
-		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
-			logger.Info().
-				Str("URI", v.URI).
-				Int("status", v.Status).
-				Msg("request")
+	/*
+		e.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
+			LogURI:    true,
+			LogStatus: true,
+			LogMethod: true,
+			LogProtocol: true,
+			LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
+				if (v.Status >= 200 && v.Status < 300) {
+					logger.Info().Msg(fmt.Sprintf("%s %s %s %d", v.Method, v.URI, v.Protocol, v.Status))
+				} else {
+					logger.Error().Msg(fmt.Sprintf("%s %s %s %d", v.Method, v.URI, v.Protocol, v.Status))
+				}
+				return nil
+			},
+		}))
+	*/
 
-			return nil
-		},
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format:           "${remote_ip} - - [${time_custom}] \"${method} ${uri} ${protocol}\" ${status} ${bytes_in} ${bytes_out} ${latency_human}\n",
+		CustomTimeFormat: "02/Jan/2006:15:04:05 -0700",
 	}))
 
 	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
@@ -72,15 +91,40 @@ func newEcho() (*echo.Echo, error) {
 		// extract information from the current host using gopsutil
 		uptime, _ := host.Uptime()
 		info, _ := host.Info()
+		cpuCountP, _ := cpu.Counts(false)
+		cpuCountV, _ := cpu.Counts(true)
+		memory, _ := mem.VirtualMemory()
+		disk, _ := disk.Usage("/")
+
+		// Get CPU temperature
+		temps, err := sensors.SensorsTemperatures()
+		cpuTemp := "N/A"
+		if err == nil && len(temps) > 0 {
+			// Find the first CPU temperature sensor
+			for _, temp := range temps {
+				if temp.SensorKey == "coretemp_core_0" {
+					cpuTemp = fmt.Sprintf("%.0f°C", temp.Temperature)
+					break
+				}
+			}
+		}
 
 		hostInfo := HostInfo{
 			CurrentTime:     time.Now().Format(time.RFC3339),
 			Hostname:        hostname,
 			Port:            port,
-			Uptime:          formatDuration(time.Duration(time.Duration(uptime).Seconds())),
+			Uptime:          formatDuration(time.Duration(uptime) * time.Second),
 			OS:              info.OS,
 			Platform:        info.Platform,
 			PlatformVersion: info.PlatformVersion,
+			CPUP:            cpuCountP,
+			CPUV:            cpuCountV,
+			TotalMemory:     humanize.IBytes(memory.Total),
+			FreeMemory:      humanize.IBytes(memory.Free),
+			CacheMemory:     humanize.IBytes(memory.Cached),
+			TotalDiskSpace:  humanize.IBytes(disk.Total),
+			FreeDiskSpace:   humanize.IBytes(disk.Free),
+			CPUTemperature:  cpuTemp,
 		}
 
 		return c.Render(http.StatusOK, "main", hostInfo)

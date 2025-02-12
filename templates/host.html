@@ -1,16 +1,49 @@
 {{ define "main" }}
 <h1>Host Information</h1>
-<ul>
-    <li>{{ template "currentTime" .CurrentTime }}</li>
-    <li><strong>Hostname:</strong> {{.Hostname}}:{{.Port}}</li>
-    <li><strong>Uptime:</strong> {{.Uptime}}</li>
-    <li><strong>OS:</strong> {{.OS}}</li>
-    <li><strong>Platform:</strong> {{.Platform}}</li>
-    <li><strong>Platform Version:</strong> {{.PlatformVersion}}</li>
-</ul>
+<table border="1" cellpadding="5" cellspacing="0">
+    <tr>
+        <th>Property</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <td>Current Time</td>
+        <td>{{ template "currentTime" .CurrentTime }}</td>
+    </tr>
+    <tr>
+        <td>Hostname</td>
+        <td>{{.Hostname}}:{{.Port}}</td>
+    </tr>
+    <tr>
+        <td>Uptime</td>
+        <td>{{.Uptime}}</td>
+    </tr>
+    <tr>
+        <td>OS</td>
+        <td>{{.OS}}</td>
+    </tr>
+    <tr>
+        <td>Platform</td>
+        <td>{{.Platform}}</td>
+    </tr>
+    <tr>
+        <td>Platform Version</td>
+        <td>{{.PlatformVersion}}</td>
+    </tr>
+    <tr>
+        <td>CPU Physical / Virtual / Temperature</td>
+        <td>{{.CPUP}} / {{.CPUV}} / {{.CPUTemperature}}</td>
+    </tr>
+    <tr>
+        <td>Total / Free / Cache Memory</td>
+        <td>{{.TotalMemory}} / {{.FreeMemory}} / {{.CacheMemory}}</td>
+    </tr>
+    <tr>
+        <td>Total / Free Disk Space</td>
+        <td>{{.TotalDiskSpace}} / {{.FreeDiskSpace}}</td>
+    </tr>
+</table>
 {{ end }}
 
-
 {{ block "currentTime" .}}
-<strong>Current time:</strong> {{ . }}
+    {{ . }}
 {{ end }}
