@@ -3,7 +3,10 @@
 <ul>
     <li>{{ template "currentTime" .CurrentTime }}</li>
     <li><strong>Hostname:</strong> {{.Hostname}}:{{.Port}}</li>
-
+    <li><strong>Uptime:</strong> {{.Uptime}}</li>
+    <li><strong>OS:</strong> {{.OS}}</li>
+    <li><strong>Platform:</strong> {{.Platform}}</li>
+    <li><strong>Platform Version:</strong> {{.PlatformVersion}}</li>
 </ul>
 {{ end }}
 

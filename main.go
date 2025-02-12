@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"fmt"
 	"html/template"
 	"io"
 	"net/http"
@@ -11,12 +12,17 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/rs/zerolog"
+	"github.com/shirou/gopsutil/v3/host"
 )
 
 type HostInfo struct {
-	CurrentTime string
-	Hostname    string
-	Port        string
+	CurrentTime     string
+	Hostname        string
+	Port            string
+	Uptime          string
+	OS              string
+	Platform        string
+	PlatformVersion string
 }
 
 //go:embed static templates
@@ -61,12 +67,20 @@ func newEcho() (*echo.Echo, error) {
 
 	e.GET("/host", func(c echo.Context) error {
 		hostname, _ := os.Hostname()
-		port := "8080" // You can change this to your desired port
+		port := "8080"
+
+		// extract information from the current host using gopsutil
+		uptime, _ := host.Uptime()
+		info, _ := host.Info()
 
 		hostInfo := HostInfo{
-			CurrentTime: time.Now().Format(time.RFC3339),
-			Hostname:    hostname,
-			Port:        port,
+			CurrentTime:     time.Now().Format(time.RFC3339),
+			Hostname:        hostname,
+			Port:            port,
+			Uptime:          formatDuration(time.Duration(time.Duration(uptime).Seconds())),
+			OS:              info.OS,
+			Platform:        info.Platform,
+			PlatformVersion: info.PlatformVersion,
 		}
 
 		return c.Render(http.StatusOK, "main", hostInfo)
@@ -87,4 +101,14 @@ func main() {
 		panic(err)
 	}
 
+}
+
+func formatDuration(d time.Duration) string {
+	days := d / (24 * time.Hour)
+	d -= days * 24 * time.Hour
+	hours := d / time.Hour
+	d -= hours * time.Hour
+	minutes := d / time.Minute
+
+	return fmt.Sprintf("%d jours, %d heures, %d minutes", days, hours, minutes)
 }
