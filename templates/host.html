@@ -11,7 +11,7 @@
     </tr>
     <tr>
         <td>Hostname</td>
-        <td>{{.Hostname}}:{{.Port}}</td>
+        <td>{{.Hostname}}</td>
     </tr>
     <tr>
         <td>Uptime</td>
@@ -30,9 +30,20 @@
         <td>{{.PlatformVersion}}</td>
     </tr>
     <tr>
-        <td>CPU Physical / Virtual / Temperature</td>
-        <td>{{.CPUP}} / {{.CPUV}} / {{.CPUTemperature}}</td>
+        <td>CPU Physical / Virtual</td>
+        <td>{{.CPUP}} / {{.CPUV}}</td>
     </tr>
+    <tr>
+        <td>CPU Usage / Temperature</td>
+        <td>{{.CPUUsage}} / {{.CPUTemperature}}</td>
+    </tr>
+    <tr>
+        <td>Running Processes count</td>
+        <td>{{.RunningProcesses}}</td>
+    </tr>
+    <tr>
+        <td>Load Average</td>
+        <td>{{.LoadAverage}}</td>
     <tr>
         <td>Total / Free / Cache Memory</td>
         <td>{{.TotalMemory}} / {{.FreeMemory}} / {{.CacheMemory}}</td>
@@ -40,6 +51,18 @@
     <tr>
         <td>Total / Free Disk Space</td>
         <td>{{.TotalDiskSpace}} / {{.FreeDiskSpace}}</td>
+    </tr>
+    <tr>
+        <td>Total Swap / Free</td>
+        <td>{{.TotalSwap}} / {{.FreeSwap}}</td>
+    </tr>
+    <tr>
+        <td>Kernel Version</td>
+        <td>{{.KernelVersion}}</td>
+    </tr>
+    <tr>
+        <td>Boot Time</td>
+        <td>{{.BootTime}}</td>
     </tr>
 </table>
 {{ end }}
