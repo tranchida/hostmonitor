@@ -84,6 +84,8 @@ func newEcho() (*echo.Echo, error) {
 		}))
 	*/
 
+	e.Use(middleware.Gzip())
+
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format:           "${remote_ip} - - [${time_custom}] \"${method} ${uri} ${protocol}\" ${status} ${bytes_in} ${bytes_out} ${latency_human}\n",
 		CustomTimeFormat: "02/Jan/2006:15:04:05 -0700",
