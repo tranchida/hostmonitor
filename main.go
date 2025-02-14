@@ -8,6 +8,8 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"os/exec"
+	"runtime"
 	"time"
 
 	"github.com/dustin/go-humanize"
@@ -66,23 +68,6 @@ func newEcho() (*echo.Echo, error) {
 	e.Renderer = &Template{
 		templates: template.Must(template.ParseFS(contentFS, "templates/*")),
 	}
-
-	/*
-		e.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
-			LogURI:    true,
-			LogStatus: true,
-			LogMethod: true,
-			LogProtocol: true,
-			LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
-				if (v.Status >= 200 && v.Status < 300) {
-					logger.Info().Msg(fmt.Sprintf("%s %s %s %d", v.Method, v.URI, v.Protocol, v.Status))
-				} else {
-					logger.Error().Msg(fmt.Sprintf("%s %s %s %d", v.Method, v.URI, v.Protocol, v.Status))
-				}
-				return nil
-			},
-		}))
-	*/
 
 	e.Use(middleware.Gzip())
 
@@ -186,6 +171,8 @@ func main() {
 		panic(err)
 	}
 
+	fmt.Println("open browser on : http://localhost:8080")
+
 	if err := e.Start(":8080"); err != nil {
 		panic(err)
 	}
@@ -200,4 +187,21 @@ func formatDuration(d time.Duration) string {
 	minutes := d / time.Minute
 
 	return fmt.Sprintf("%d jours, %d heures, %d minutes", days, hours, minutes)
+}
+
+func open(url string) error {
+	var cmd string
+	var args []string
+
+	switch runtime.GOOS {
+	case "windows":
+		cmd = "cmd"
+		args = []string{"/c", "start"}
+	case "darwin":
+		cmd = "open"
+	default: // "linux", "freebsd", "openbsd", "netbsd"
+		cmd = "xdg-open"
+	}
+	args = append(args, url)
+	return exec.Command(cmd, args...).Start()
 }
