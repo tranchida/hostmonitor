@@ -9,10 +9,7 @@ import (
 )
 
 func TestHostEndpoint(t *testing.T) {
-	e, err := newEcho()
-	if err != nil {
-		t.Fatalf("failed to create echo instance: %v", err)
-	}
+	e := newEcho()
 
 	req := httptest.NewRequest(http.MethodGet, "/host", nil)
 	rec := httptest.NewRecorder()
@@ -35,10 +32,7 @@ func TestHostEndpoint(t *testing.T) {
 }
 
 func TestStaticFileNotFound(t *testing.T) {
-	e, err := newEcho()
-	if err != nil {
-		t.Fatalf("failed to create echo instance: %v", err)
-	}
+	e := newEcho()
 
 	// Try to access a non-existent static file
 	req := httptest.NewRequest(http.MethodGet, "/nonexistentfile.txt", nil)

@@ -1,4 +1,4 @@
-module echotest
+module github.com/tranchida/echotest
 
 go 1.24
 

@@ -1,74 +1,81 @@
 {{ define "main" }}
 <section class="section">
-<nav class="panel">
-<table class="table is-fullwidth is-hoverable">
-    <p class="panel-heading">Host Information</p>
-    <thead>
-        <tr>
-            <th>Property</th>
-            <th>Value</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Hostname</td>
-            <td>{{.Hostname}}</td>
-        </tr>
-        <tr>
-            <td>OS</td>
-            <td>{{.OS}}</td>
-        </tr>
-        <tr>
-            <td>Platform</td>
-            <td>{{.Platform}}</td>
-        </tr>
-        <tr>
-            <td>Platform Version</td>
-            <td>{{.PlatformVersion}}</td>
-        </tr>
-        <tr>
-            <td>Kernel Version</td>
-            <td>{{.KernelVersion}}</td>
-        </tr>
-        <tr>
-            <td>Boot Time</td>
-            <td>{{.BootTime}}</td>
-        </tr>
-        <tr>
-            <td>Uptime</td>
-            <td>{{.Uptime}}</td>
-        </tr>
-        <tr>
-            <td>CPU Physical / Virtual</td>
-            <td>{{.CPUP}} / {{.CPUV}}</td>
-        </tr>
-        <tr>
-            <td>CPU Usage / Temperature</td>
-            <td>{{.CPUUsage}} / {{.CPUTemperature}}</td>
-        </tr>
-        <tr>
-            <td>Running Processes count</td>
-            <td>{{.RunningProcesses}}</td>
-        </tr>
-        <tr>
-            <td>Load Average</td>
-            <td>{{.LoadAverage}}</td>
-        </tr>
-        <tr>
-            <td>Total / Free / Cache Memory</td>
-            <td>{{.TotalMemory}} / {{.FreeMemory}} / {{.CacheMemory}}</td>
-        </tr>
-        <tr>
-            <td>Total / Free Disk Space</td>
-            <td>{{.TotalDiskSpace}} / {{.FreeDiskSpace}}</td>
-        </tr>
-        <tr>
-            <td>Total Swap / Free</td>
-            <td>{{.TotalSwap}} / {{.FreeSwap}}</td>
-        </tr>
-    </tbody>
-</table>
-</nav>
+    <nav class="panel">
+        <table class="table is-fullwidth is-hoverable">
+            <p class="panel-heading">Host Information</p>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Hostname</td>
+                    <td>{{.Hostname}}</td>
+                </tr>
+                <tr>
+                    <td>OS</td>
+                    <td>{{.OS}}</td>
+                </tr>
+                <tr>
+                    <td>Platform</td>
+                    <td>{{.Platform}}</td>
+                </tr>
+                <tr>
+                    <td>Platform Version</td>
+                    <td>{{.PlatformVersion}}</td>
+                </tr>
+                <tr>
+                    <td>Kernel Version</td>
+                    <td>{{.KernelVersion}}</td>
+                </tr>
+                <tr>
+                    <td>Boot Time</td>
+                    <td>{{.BootTime}}</td>
+                </tr>
+                <tr>
+                    <td>Uptime</td>
+                    <td>{{.Uptime}}</td>
+                </tr>
+                <tr>
+                    <td>CPU Physical / Virtual</td>
+                    <td>{{.CPUP}} / {{.CPUV}}</td>
+                </tr>
+                <tr>
+                    <td>CPU Usage / Temperature</td>
+                    <td>{{.CPUUsage}} / {{.CPUTemperature}}</td>
+                </tr>
+                <tr>
+                    <td>Running Processes count</td>
+                    <td>{{.RunningProcesses}}</td>
+                </tr>
+                <tr>
+                    <td>Load Average</td>
+                    <td>{{.LoadAverage}}</td>
+                </tr>
+                <tr>
+                    <td>Total / Free / Cache Memory</td>
+                    <td>{{.TotalMemory}} / {{.FreeMemory}} / {{.CacheMemory}}</td>
+                </tr>
+                <tr>
+                    <td>Total / Free Disk Space</td>
+                    <td>{{.TotalDiskSpace}} / {{.FreeDiskSpace}}</td>
+                </tr>
+                <tr>
+                    <td>Total Swap / Free</td>
+                    <td>{{.TotalSwap}} / {{.FreeSwap}}</td>
+                </tr>
+                <tr>
+                    <td>Network Interfaces</td>
+                    <td>
+                        {{ range .NetworkInterfaces}}
+                            {{.}}<br>
+                        {{ end }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </nav>
 </section>
 {{ end }}
-
