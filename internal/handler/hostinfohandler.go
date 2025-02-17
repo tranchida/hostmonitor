@@ -13,6 +13,6 @@ func HostInfoHandler(c echo.Context) error {
 	if err != nil {
 		return err // Proper error handling; return the error to Echo
 	}
-	return c.Render(http.StatusOK, "main", hostInfo)
+	return c.Render(http.StatusOK, "host", hostInfo)
 }
 
