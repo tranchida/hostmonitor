@@ -7,8 +7,6 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"os/exec"
-	"runtime"
 	"time"
 
 	"github.com/dustin/go-humanize"
@@ -180,19 +178,4 @@ func formatDuration(d time.Duration) string {
 	return fmt.Sprintf("%d jours, %d heures, %d minutes", days, hours, minutes)
 }
 
-func open(url string) error {
-	var cmd string
-	var args []string
 
-	switch runtime.GOOS {
-	case "windows":
-		cmd = "cmd"
-		args = []string{"/c", "start"}
-	case "darwin":
-		cmd = "open"
-	default: // "linux", "freebsd", "openbsd", "netbsd"
-		cmd = "xdg-open"
-	}
-	args = append(args, url)
-	return exec.Command(cmd, args...).Start()
-}
