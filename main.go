@@ -4,7 +4,6 @@ import (
 	"embed"
 	"fmt"
 	"html/template"
-	"io"
 	"net"
 	"net/http"
 	"os"
@@ -52,21 +51,13 @@ type HostInfo struct {
 //go:embed static templates
 var contentFS embed.FS
 
-type Template struct {
-	templates *template.Template
-}
-
-func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	return t.templates.ExecuteTemplate(w, name, data)
-}
-
 func newEcho() (*echo.Echo, error) {
 
 	e := echo.New()
 	e.HideBanner = false
 
-	e.Renderer = &Template{
-		templates: template.Must(template.ParseFS(contentFS, "templates/*")),
+	e.Renderer = &echo.TemplateRenderer{
+		Template: template.Must(template.ParseFS(contentFS, "templates/*")),
 	}
 
 	e.Use(middleware.Gzip())
