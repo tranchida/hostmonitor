@@ -530,6 +530,12 @@
   .static {
     position: static;
   }
+  .col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+  .m-9 {
+    margin: calc(var(--spacing) * 9);
+  }
   .block {
     display: block;
   }
@@ -717,6 +723,9 @@
   }
   .p-4 {
     padding: calc(var(--spacing) * 4);
+  }
+  .p-9 {
+    padding: calc(var(--spacing) * 9);
   }
   .text-center {
     text-align: center;

@@ -33,7 +33,9 @@ type HostInfo struct {
 	FreeDiskSpace     string
 	CPUTemperature    string
 	CPUUsage          string
-	LoadAverage       string
+	LoadAverage1      string
+	LoadAverage5      string
+	LoadAverage15     string
 	TotalSwap         string
 	FreeSwap          string
 	NetworkInterfaces []string
@@ -72,11 +74,16 @@ func GetHostInfo() (HostInfo, error) {
 	cpuUsage := fmt.Sprintf("%.2f%%", cpuPercent[0])
 
 	// Get load average
-	loadAvg, _ := load.Avg()
-	loadAverage := fmt.Sprintf("%.2f, %.2f, %.2f", loadAvg.Load1, loadAvg.Load5, loadAvg.Load15)
+	loadAvg, err := load.Avg()
+	if err != nil {
+		return HostInfo{}, err
+	}
 
 	// Get swap memory
-	swap, _ := mem.SwapMemory()
+	swap, err := mem.SwapMemory()
+	if err != nil {
+		return HostInfo{}, err
+	}
 
 	// Get network interfaces
 	netInterfaces, _ := net.Interfaces()
@@ -110,7 +117,9 @@ func GetHostInfo() (HostInfo, error) {
 		FreeDiskSpace:     humanize.IBytes(disk.Free),
 		CPUTemperature:    cpuTemp,
 		CPUUsage:          cpuUsage,
-		LoadAverage:       loadAverage,
+		LoadAverage1:      fmt.Sprintf("%.2f", loadAvg.Load1),
+		LoadAverage5:      fmt.Sprintf("%.2f", loadAvg.Load5),
+		LoadAverage15:     fmt.Sprintf("%.2f", loadAvg.Load15),
 		TotalSwap:         humanize.IBytes(swap.Total),
 		FreeSwap:          humanize.IBytes(swap.Free),
 		NetworkInterfaces: interfaces,

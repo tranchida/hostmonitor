@@ -1,6 +1,8 @@
 {{ define "host" }}
 <div class="flex flex-row">
-    <div class="flex items-center justify-center w-15 -rotate-90 whitespace-nowrap text-white uppercase text-2xl font-bold">System information</div>
+    <div
+        class="flex items-center justify-center w-15 -rotate-90 whitespace-nowrap text-white uppercase text-2xl font-bold">
+        System information</div>
     <div class="grid grid-cols-4 gap-4 w-full">
         <div class="hostproperty">
             <span class="hostlabel">Host</span>
@@ -44,7 +46,9 @@
         </div>
         <div class="hostproperty">
             <span class="hostlabel">Load average</span>
-            <span class="hostvalue">{{.LoadAverage}}</span>
+            <span class="hostvalue">
+                1 min : {{.LoadAverage1 }} 5 min : {{ .LoadAverage5 }} 15 min : {{ .LoadAverage15}}
+            </span>
         </div>
         <div class="hostproperty">
             <span class="hostlabel">Memory (Total / Free / Cache):</span>
@@ -58,14 +62,14 @@
             <span class="hostlabel">Swap (Total / Free):</span>
             <span class="hostvalue">{{.TotalSwap}} / {{.FreeSwap}}</span>
         </div>
-        <div class="hostproperty">
+        <!-- div class="hostproperty col-span-2">
             <span class="hostlabel">Network interfaces</span>
             <span class="hostvalue">
                 {{ range .NetworkInterfaces}}
                 {{.}}<br>
                 {{ end }}
             </span>
-        </div>
+        </div -->
     </div>
 </div>
 {{ end }}

@@ -15,4 +15,3 @@ func HostInfoHandler(c echo.Context) error {
 	}
 	return c.Render(http.StatusOK, "host", hostInfo)
 }
-
