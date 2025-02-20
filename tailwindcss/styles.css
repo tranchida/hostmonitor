@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .hostproperty {
-  @apply p-4 bg-white border-solid border-1 rounded-md hover:inset-ring-2 hover:inset-ring-sky-800;
+  @apply p-4 bg-white border-solid border-1 rounded-md hover:inset-ring-2 hover:inset-ring-sky-800 shadow-md shadow-sky-950;
 }
 
 .hostlabel {
