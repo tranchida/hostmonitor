@@ -1,5 +1,5 @@
 dev:
-	go tool air
+	go tool templ generate --watch --proxy="http://localhost:8080" --cmd="go run ."
 
 build:
 	go build -o bin/echotest main.go

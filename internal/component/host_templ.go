@@ -34,7 +34,7 @@ func HostDisplay(data model.HostInfo) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"flex flex-row\"><div class=\"flex items-center justify-center w-15 -rotate-90 whitespace-nowrap text-white uppercase text-2xl font-bold\">System information</div><div class=\"grid grid-cols-4 gap-4 w-full\"><div class=\"hostproperty\"><span class=\"hostlabel\">Host</span> <span class=\"hostvalue\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"flex flex-row\"><div class=\"flex items-center justify-center w-15 -rotate-90 whitespace-nowrap text-black uppercase text-2xl font-bold\">System information</div><div class=\"grid grid-cols-4 gap-4 w-full\"><div class=\"hostproperty\"><span class=\"hostlabel\">Host</span> <span class=\"hostvalue\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
