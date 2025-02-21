@@ -138,5 +138,5 @@ func formatDuration(d time.Duration) string {
 	d -= hours * time.Hour
 	minutes := d / time.Minute
 
-	return fmt.Sprintf("%d jours, %d heures, %d minutes", days, hours, minutes)
+	return fmt.Sprintf("%d days, %d hours, %d minutes", days, hours, minutes)
 }
