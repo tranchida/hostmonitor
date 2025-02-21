@@ -1,0 +1,74 @@
+package component
+
+import (
+	"github.com/tranchida/echotest/internal/model"
+	"strconv"
+)
+
+templ HostDisplay(data model.HostInfo) {
+	<div class="flex flex-row">
+		<div class="flex items-center justify-center w-15 -rotate-90 whitespace-nowrap text-white uppercase text-2xl font-bold">
+			System information
+		</div>
+		<div class="grid grid-cols-4 gap-4 w-full">
+			<div class="hostproperty">
+				<span class="hostlabel">Host</span>
+				<span class="hostvalue">{ data.Hostname }</span>
+			</div>
+			<div class="hostproperty">
+				<span class="hostlabel">OS</span>
+				<span class="hostvalue">{ data.OS }</span>
+			</div>
+			<div class="hostproperty">
+				<span class="hostlabel">Plateform</span>
+				<span class="hostvalue">{ data.Platform } { data.PlatformVersion }</span>
+			</div>
+			<div class="hostproperty">
+				<span class="hostlabel">Kernel</span>
+				<span class="hostvalue">{ data.KernelVersion }</span>
+			</div>
+			<div class="hostproperty">
+				<span class="hostlabel">Boot time</span>
+				<span class="hostvalue">{ data.BootTime }</span>
+			</div>
+			<div class="hostproperty">
+				<span class="hostlabel">Uptime</span>
+				<span class="hostvalue">{ data.Uptime }</span>
+			</div>
+			<div class="hostproperty">
+				<span class="hostlabel">CPU (Physique / Virtuel)</span>
+				<span class="hostvalue">{ strconv.Itoa(data.CPUP) } / { strconv.Itoa(data.CPUV) }</span>
+			</div>
+			<div class="hostproperty">
+				<span class="hostlabel">CPU usage</span>
+				<span class="hostvalue">{ data.CPUUsage }</span>
+			</div>
+			<div class="hostproperty">
+				<span class="hostlabel">CPU temperature</span>
+				<span class="hostvalue">{ data.CPUTemperature }</span>
+			</div>
+			<div class="hostproperty">
+				<span class="hostlabel">Running processus count</span>
+				<span class="hostvalue">{ strconv.Itoa(data.RunningProcesses) }</span>
+			</div>
+			<div class="hostproperty">
+				<span class="hostlabel">Load average</span>
+				<span class="hostvalue">
+					1 min : { data.LoadAverage1 } 5 min : { data.LoadAverage5 } 15 min : { data.LoadAverage15 }
+				</span>
+			</div>
+			<div class="hostproperty">
+				<span class="hostlabel">Memory (Total / Free / Cache):</span>
+				<span class="hostvalue">{ data.TotalMemory } / { data.FreeMemory } / { data.CacheMemory }</span>
+			</div>
+			<div class="hostproperty">
+				<span class="hostlabel">Storage (Total / Free):</span>
+				<span class="hostvalue">{ data.TotalDiskSpace } / { data.FreeDiskSpace }</span>
+			</div>
+			<div class="hostproperty">
+				<span class="hostlabel">Swap (Total / Free):</span>
+				<span class="hostvalue">{ data.TotalSwap } / { data.FreeSwap }</span>
+			</div>
+		</div>
+	</div>
+}

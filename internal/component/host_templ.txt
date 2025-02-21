@@ -1,0 +1,23 @@
+<div class=\"flex flex-row\"><div class=\"flex items-center justify-center w-15 -rotate-90 whitespace-nowrap text-white uppercase text-2xl font-bold\">System information</div><div class=\"grid grid-cols-4 gap-4 w-full\"><div class=\"hostproperty\"><span class=\"hostlabel\">Host</span> <span class=\"hostvalue\">
+</span></div><div class=\"hostproperty\"><span class=\"hostlabel\">OS</span> <span class=\"hostvalue\">
+</span></div><div class=\"hostproperty\"><span class=\"hostlabel\">Plateform</span> <span class=\"hostvalue\">
+ 
+</span></div><div class=\"hostproperty\"><span class=\"hostlabel\">Kernel</span> <span class=\"hostvalue\">
+</span></div><div class=\"hostproperty\"><span class=\"hostlabel\">Boot time</span> <span class=\"hostvalue\">
+</span></div><div class=\"hostproperty\"><span class=\"hostlabel\">Uptime</span> <span class=\"hostvalue\">
+</span></div><div class=\"hostproperty\"><span class=\"hostlabel\">CPU (Physique / Virtuel)</span> <span class=\"hostvalue\">
+ / 
+</span></div><div class=\"hostproperty\"><span class=\"hostlabel\">CPU usage</span> <span class=\"hostvalue\">
+</span></div><div class=\"hostproperty\"><span class=\"hostlabel\">CPU temperature</span> <span class=\"hostvalue\">
+</span></div><div class=\"hostproperty\"><span class=\"hostlabel\">Running processus count</span> <span class=\"hostvalue\">
+</span></div><div class=\"hostproperty\"><span class=\"hostlabel\">Load average</span> <span class=\"hostvalue\">1 min : 
+ 5 min : 
+ 15 min : 
+</span></div><div class=\"hostproperty\"><span class=\"hostlabel\">Memory (Total / Free / Cache):</span> <span class=\"hostvalue\">
+ / 
+ / 
+</span></div><div class=\"hostproperty\"><span class=\"hostlabel\">Storage (Total / Free):</span> <span class=\"hostvalue\">
+ / 
+</span></div><div class=\"hostproperty\"><span class=\"hostlabel\">Swap (Total / Free):</span> <span class=\"hostvalue\">
+ / 
+</span></div></div></div>

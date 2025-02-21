@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/tranchida/echotest/internal/component"
 	"github.com/tranchida/echotest/internal/model" // Updated import path
 )
 
@@ -13,5 +14,5 @@ func HostInfoHandler(c echo.Context) error {
 	if err != nil {
 		return err // Proper error handling; return the error to Echo
 	}
-	return c.Render(http.StatusOK, "host", hostInfo)
+	return Render(c, http.StatusOK, component.HostDisplay(hostInfo))
 }

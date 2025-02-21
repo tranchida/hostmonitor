@@ -3,7 +3,6 @@ package main
 import (
 	"embed"
 	"fmt"
-	"html/template"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -11,16 +10,12 @@ import (
 	"github.com/tranchida/echotest/internal/handler"
 )
 
-//go:embed static templates
+//go:embed static
 var contentFS embed.FS
 
 func newEcho() *echo.Echo {
 
 	e := echo.New()
-
-	e.Renderer = &echo.TemplateRenderer{
-		Template: template.Must(template.ParseFS(contentFS, "templates/*")),
-	}
 
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format:           "${remote_ip} - - [${time_custom}] \"${method} ${uri} ${protocol}\" ${status} ${bytes_in} ${bytes_out} ${latency_human}\n",
