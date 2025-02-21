@@ -1,6 +1,6 @@
 bin/
 tmp/
 echotest
-
+internal/component/*.txt
 .idea/
 .vscode/
