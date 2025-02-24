@@ -1,47 +1,72 @@
-# README.md
-
 # Go HTML App
 
-This project is a simple Go web application that displays information about the host where the backend is running. It utilizes Go's HTML templating capabilities to dynamically render host details.
+This project demonstrates a basic Golang web application that uses:
+- **Echo** as the web framework.
+- **HTMX** as lightweight library that enhances HTML with AJAX, CSS transitions, and server-sent events, enabling dynamic, interactive web applications without heavy JavaScript.
+- **Templ** for HTML templating.
+- **TailwindCSS** for styling.
+
+## Features
+
+- Simple server setup using Echo.
+- HTMX to update data via AJAX call
+- Dynamic HTML rendering with templ.
+- Modern UI design with TailwindCSS.
+
+## Getting Started
+
+### Prerequisites
+
+- [Go](https://golang.org/dl/)
+- Node.js (for managing TailwindCSS)
+- [TailwindCSS](https://tailwindcss.com/docs/installation)
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/username/go-html-app.git
+   cd go-html-app
+   ```
+
+2. Install Golang dependencies:
+
+   ```bash
+   go mod tidy
+   ```
+
+3. Install Node dependencies for TailwindCSS:
+
+   ```bash
+   npm install
+   ```
+
+### Running the Application
+
+#### Build and run the Go application:
+
+   ```make live```
+
 
 ## Project Structure
 
 ```
-go-html-app
-├── main.go         # Entry point of the application
-├── go.mod          # Module definition and dependencies
-├── templates       # Directory containing HTML templates
-│   └── host.html   # Template for displaying host information
-└── README.md       # Project documentation
+.
+├── main.go          # Main application entry point.
+├── templates/       # Contains HTML templates.
+├── static/          # Static files including TailwindCSS output.
+└── README.md        # Project documentation.
 ```
 
-## Requirements
+## Technologies Used
 
-- Go 1.16 or later
-
-## Installation
-
-1. Clone the repository:
-   ```
-   git clone <repository-url>
-   cd go-html-app
-   ```
-
-2. Install dependencies:
-   ```
-   go mod tidy
-   ```
-
-## Running the Application
-
-To run the application, execute the following command in the project directory:
-
-```
-go run main.go
-```
-
-The application will start an HTTP server on `localhost:8080`. You can access it by navigating to `http://localhost:8080` in your web browser.
+- [Echo](https://echo.labstack.com/) - Fast and minimalist web framework.
+- [Templ](https://github.com/yourusername/templ) - Template engine for HTML rendering.
+- [TailwindCSS](https://tailwindcss.com/) - Utility-first CSS framework.
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is licensed under the MIT License.
+
+Happy coding!
