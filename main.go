@@ -27,6 +27,7 @@ func newEcho() *echo.Echo {
 		Filesystem: http.FS(contentFS),
 	}))
 
+	e.GET("/", handler.IndexHandler)
 	e.GET("/host", handler.HostInfoHandler)
 
 	return e

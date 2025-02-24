@@ -8,6 +8,11 @@ import (
 	"github.com/tranchida/echotest/internal/model" // Updated import path
 )
 
+
+func IndexHandler(c echo.Context) error {
+	return Render(c, http.StatusOK, component.Index())
+}
+
 // HostInfoHandler handles the /host route.
 func HostInfoHandler(c echo.Context) error {
 	hostInfo, err := model.GetHostInfo()
