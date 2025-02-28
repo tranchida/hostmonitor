@@ -8,7 +8,7 @@ import (
 	"github.com/tranchida/echotest/internal/model" // Updated import path
 )
 
-
+// IndexHandler handles the / route.
 func IndexHandler(c echo.Context) error {
 	return Render(c, http.StatusOK, component.Index())
 }
