@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/tranchida/echotest/internal/model"
+	"github.com/tranchida/hostmonitor/internal/model"
 )
 
 // IndexHandler handles the / route.

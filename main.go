@@ -6,7 +6,7 @@ import (
 	"html/template"
 
 	"github.com/gin-gonic/gin"
-	"github.com/tranchida/echotest/internal/handler"
+	"github.com/tranchida/hostmonitor/internal/handler"
 )
 
 //go:embed template
