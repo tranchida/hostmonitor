@@ -3,29 +3,24 @@ package main
 import (
 	"embed"
 	"fmt"
-	"net/http"
+	"html/template"
 
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"github.com/gin-gonic/gin"
 	"github.com/tranchida/echotest/internal/handler"
 )
 
-//go:embed static
+//go:embed template
 var contentFS embed.FS
 
-func newEcho() *echo.Echo {
+func newEngine() *gin.Engine {
 
-	e := echo.New()
+	e := gin.New()
+	e.Use(gin.Logger())
 
-	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format:           "${remote_ip} - - [${time_custom}] \"${method} ${uri} ${protocol}\" ${status} ${bytes_in} ${bytes_out} ${latency_human}\n",
-		CustomTimeFormat: "02/Jan/2006:15:04:05 -0700",
-	}))
+	//fs, _ := fs.Sub(contentFS, "static")
+	//e.StaticFS("/static", http.FS(fs))
 
-	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
-		Root:       "static",
-		Filesystem: http.FS(contentFS),
-	}))
+	e.SetHTMLTemplate(template.Must(template.ParseFS(contentFS, "template/*.html")))
 
 	e.GET("/", handler.IndexHandler)
 	e.GET("/host", handler.HostInfoHandler)
@@ -37,7 +32,7 @@ func main() {
 
 	fmt.Println("open browser on : http://localhost:8080")
 
-	if err := newEcho().Start(":8080"); err != nil {
+	if err := newEngine().Run(":8080"); err != nil {
 		panic(err)
 	}
 
