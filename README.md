@@ -6,3 +6,10 @@ This project demonstrates a basic Golang web application that uses:
 - **http/template** for HTML templating.
 - **TailwindCSS** for styling.
 
+## install tailwindcss
+
+```npm install tailwindcss @tailwindcss/cli```
+
+### run tailwindcss cli watch
+
+```npx @tailwindcss/cli -i style.css -o ./static/style.css --watch```

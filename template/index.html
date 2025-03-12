@@ -1,26 +1,13 @@
 {{ define "index" }}
 <!DOCTYPE html>
-<html lang="en" class="">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Host Information</title>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <style type="text/tailwindcss">
-        .hostproperty {
-            @apply p-4 bg-white border-solid border-1 rounded-md hover:inset-ring-2 hover:inset-ring-sky-800 shadow-md shadow-sky-950;
-        }
-
-        .hostlabel {
-            @apply font-bold block mb-1.5;
-        }
-
-        .hostvalue {
-            @apply break-all;
-        }
-    </style>
-    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+    <link href="static/style.css" rel="stylesheet">
+    <script src="static/htmx.min.js"></script>
 </head>
 
 <body class="font-sans bg-gray-900 p-4">

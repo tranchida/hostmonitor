@@ -4,3 +4,6 @@ echotest
 internal/component/*.txt
 .idea/
 .vscode/
+node_modules/
+package-lock.json
+package.json

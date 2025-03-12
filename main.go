@@ -4,12 +4,14 @@ import (
 	"embed"
 	"fmt"
 	"html/template"
+	"io/fs"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tranchida/hostmonitor/internal/handler"
 )
 
-//go:embed template
+//go:embed template static
 var contentFS embed.FS
 
 func newEngine() *gin.Engine {
@@ -17,10 +19,10 @@ func newEngine() *gin.Engine {
 	e := gin.New()
 	e.Use(gin.Logger())
 
-	//fs, _ := fs.Sub(contentFS, "static")
-	//e.StaticFS("/static", http.FS(fs))
-
 	e.SetHTMLTemplate(template.Must(template.ParseFS(contentFS, "template/*.html")))
+
+	fs, _ := fs.Sub(contentFS, "static")
+	e.StaticFS("/static", http.FS(fs))
 
 	e.GET("/", handler.IndexHandler)
 	e.GET("/host", handler.HostInfoHandler)
