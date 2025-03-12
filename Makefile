@@ -1,8 +1,11 @@
 tailwindcss:
-	tailwindcss -i tailwindcss/styles.css -o static/styles.css --watch --optimize --minify
+	npx @tailwindcss/cli -i style.css -o ./static/style.css --watch
+
+run:
+	air
 
 live:
-	make -j2 templ tailwindcss
+	make -j2 tailwindcss run
 
 build:
-	go build -o bin/echotest main.go
+	go build -o bin/hostmonitor main.go
