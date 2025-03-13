@@ -219,17 +219,11 @@
   .table {
     display: table;
   }
-  .w-2 {
-    width: calc(var(--spacing) * 2);
-  }
   .w-15 {
     width: calc(var(--spacing) * 15);
   }
   .w-full {
     width: 100%;
-  }
-  .flex-grow {
-    flex-grow: 1;
   }
   .grow {
     flex-grow: 1;

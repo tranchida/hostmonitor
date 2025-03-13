@@ -21,8 +21,8 @@ func newEngine() *gin.Engine {
 
 	e.SetHTMLTemplate(template.Must(template.ParseFS(contentFS, "template/*.html")))
 
-	fs, _ := fs.Sub(contentFS, "static")
-	e.StaticFS("/static", http.FS(fs))
+	staticfs, _ := fs.Sub(contentFS, "static")
+	e.StaticFS("/static", http.FS(staticfs))
 
 	e.GET("/", handler.IndexHandler)
 	e.GET("/host", handler.HostInfoHandler)

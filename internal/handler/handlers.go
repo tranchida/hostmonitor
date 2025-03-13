@@ -16,7 +16,7 @@ func IndexHandler(c *gin.Context) {
 func HostInfoHandler(c *gin.Context) {
 	hostInfo, err := model.GetHostInfo()
 	if err != nil {
-		c.Error(err) 
+		c.AbortWithError(http.StatusInternalServerError, err)
 	}
 	c.HTML(http.StatusOK, "host", hostInfo)
 }
