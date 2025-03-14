@@ -19,7 +19,7 @@ func newEngine() *gin.Engine {
 	e := gin.New()
 	e.Use(gin.Logger())
 
-	e.SetHTMLTemplate(template.Must(template.ParseFS(contentFS, "template/*.html")))
+	e.SetHTMLTemplate(template.Must(template.ParseFS(contentFS, "template/*.gohtml")))
 
 	staticfs, _ := fs.Sub(contentFS, "static")
 	e.StaticFS("/static", http.FS(staticfs))
