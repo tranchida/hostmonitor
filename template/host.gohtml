@@ -63,6 +63,10 @@
             <span class="hostlabel">Swap (Total / Free):</span>
             <span class="hostvalue">{{ .TotalSwap }} / {{ .FreeSwap }}</span>
         </div>
+        <div class="hostproperty">
+            <span class="hostlabel">Running in Docker</span>
+            <span class="hostvalue">{{ .IsRunningInDocker }}</span>
+        </div>
     </div>
 </div>
 {{ end }}
