@@ -35,7 +35,7 @@ func TestStaticFileNotFound(t *testing.T) {
 	e := newEngine()
 
 	// Try to access a non-existent static file
-	req := httptest.NewRequest(http.MethodGet, "/nonexistentfile.txt", nil)
+	req := httptest.NewRequest(http.MethodGet, "/static/nonexistentfile.txt", nil)
 	rec := httptest.NewRecorder()
 
 	e.ServeHTTP(rec, req)
