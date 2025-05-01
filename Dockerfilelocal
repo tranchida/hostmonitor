@@ -1,0 +1,13 @@
+FROM docker.io/alpine:latest 
+
+# Set the Current Working Directory inside the container
+WORKDIR /app
+
+# Copy the Pre-built binary file from the previous stage
+COPY bin/hostmonitor .
+
+# Expose port 8080 to the outside world
+EXPOSE 8080
+
+# Command to run the executable
+CMD ["/app/hostmonitor"]
