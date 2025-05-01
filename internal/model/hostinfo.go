@@ -153,6 +153,11 @@ func isRunningInContainer() bool {
     if _, err := os.Stat("/.dockerenv"); err == nil {
         return true
     }
-        
+
+	// podman create a container with the environment variable container=podman
+	if os.Getenv("container") == "podman" {
+		return true
+	}
+
     return false
 }
