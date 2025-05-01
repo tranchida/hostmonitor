@@ -42,7 +42,7 @@ type HostInfo struct {
 	RunningProcesses  int
 	KernelVersion     string
 	BootTime          string
-	IsRunningInDocker bool
+	IsRunningInContainer bool
 }
 
 // GetHostInfo retrieves and formats host information.
@@ -129,7 +129,7 @@ func GetHostInfo() (HostInfo, error) {
 		BootTime:          bootTime,
 	}
 
-	hostInfo.IsRunningInDocker = isRunningInDockerContainer()
+	hostInfo.IsRunningInContainer = isRunningInContainer()
 
 	return hostInfo, nil
 }
@@ -144,7 +144,7 @@ func formatDuration(d time.Duration) string {
 	return fmt.Sprintf("%d days, %d hours, %d minutes", days, hours, minutes)
 }
 
-func isRunningInDockerContainer() bool {
+func isRunningInContainer() bool {
     // docker creates a .dockerenv file at the root
     // of the directory tree inside the container.
     // if this file exists then the viewer is running
