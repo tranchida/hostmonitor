@@ -159,5 +159,10 @@ func isRunningInContainer() bool {
 		return true
 	}
 
-    return false
+	// check if running in kubernetes
+	if os.Getenv("KUBERNETES_SERVICE_HOST") != "" {
+		return true
+	}
+
+	return false
 }
