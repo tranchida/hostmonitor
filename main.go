@@ -3,23 +3,23 @@ package main
 import (
 	"embed"
 	"fmt"
-	"html/template"
 	"io/fs"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tranchida/hostmonitor/internal/handler"
+	"go.uber.org/zap"
 )
 
 //go:embed template static
 var contentFS embed.FS
 
-func newEngine() *gin.Engine {
+func newEngine(logger *zap.Logger) *gin.Engine {
 
 	e := gin.New()
-	e.Use(gin.Logger())
-
-	e.SetHTMLTemplate(template.Must(template.ParseFS(contentFS, "template/*.gohtml")))
+	e.Use(LoggerMiddleware(logger))
+	e.Use(gin.Recovery())
 
 	staticfs, _ := fs.Sub(contentFS, "static")
 	e.StaticFS("/static", http.FS(staticfs))
@@ -31,11 +31,30 @@ func newEngine() *gin.Engine {
 }
 
 func main() {
+	logger := zap.Must(zap.NewProduction())
+	defer logger.Sync()
 
 	fmt.Println("open browser on : http://localhost:8080")
 
-	if err := newEngine().Run(":8080"); err != nil {
+	if err := newEngine(logger).Run(":8080"); err != nil {
 		panic(err)
 	}
 
+}
+
+func LoggerMiddleware(logger *zap.Logger) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		start := time.Now()
+
+		c.Next()
+
+		logger.Info(
+			"HTTP",
+			zap.String("method", c.Request.Method),
+			zap.Int("status", c.Writer.Status()),
+			zap.String("path", c.Request.URL.Path),
+			zap.Duration("duration", time.Since(start)),
+		)
+
+	}
 }

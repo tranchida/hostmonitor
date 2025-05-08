@@ -1,4 +1,9 @@
-{{ define "host" }}
+package template
+
+import "github.com/tranchida/hostmonitor/internal/model"
+
+templ Host(hostInfo model.HostInfo) {
+
 <div class="flex flex-row">
     <div
         class="flex items-center justify-center w-15 -rotate-90 whitespace-nowrap text-white uppercase text-2xl font-bold">
@@ -7,66 +12,68 @@
     <div class="grid grid-cols-4 gap-4 w-full">
         <div class="hostproperty">
             <span class="hostlabel">Host</span>
-            <span class="hostvalue">{{ .Hostname }}</span>
+            <span class="hostvalue">{ hostInfo.Hostname }</span>
         </div>
         <div class="hostproperty">
             <span class="hostlabel">OS</span>
-            <span class="hostvalue">{{ .OS }}</span>
+            <span class="hostvalue">{ hostInfo.OS }</span>
         </div>
         <div class="hostproperty">
             <span class="hostlabel">Plateform</span>
-            <span class="hostvalue">{{ .Platform }} {{ .PlatformVersion }}</span>
+            <span class="hostvalue">{ hostInfo.Platform } { hostInfo.PlatformVersion }</span>
         </div>
         <div class="hostproperty">
             <span class="hostlabel">Kernel</span>
-            <span class="hostvalue">{{ .KernelVersion }}</span>
+            <span class="hostvalue">{ hostInfo.KernelVersion }</span>
         </div>
         <div class="hostproperty">
             <span class="hostlabel">Boot time</span>
-            <span class="hostvalue">{{ .BootTime }}</span>
+            <span class="hostvalue">{ hostInfo.BootTime }</span>
         </div>
         <div class="hostproperty">
             <span class="hostlabel">Uptime</span>
-            <span class="hostvalue">{{ .Uptime }}</span>
+            <span class="hostvalue">{ hostInfo.Uptime }</span>
         </div>
         <div class="hostproperty">
             <span class="hostlabel">CPU (Physique / Virtuel)</span>
-            <span class="hostvalue">{{ .CPUP }} / {{ .CPUV }}</span>
+            <span class="hostvalue">{ hostInfo.CPUP } / { hostInfo.CPUV }</span>
         </div>
         <div class="hostproperty">
             <span class="hostlabel">CPU usage</span>
-            <span class="hostvalue">{{ .CPUUsage }}</span>
+            <span class="hostvalue">{ hostInfo.CPUUsage }</span>
         </div>
         <div class="hostproperty">
             <span class="hostlabel">CPU temperature</span>
-            <span class="hostvalue">{{ .CPUTemperature }}</span>
+            <span class="hostvalue">{ hostInfo.CPUTemperature }</span>
         </div>
         <div class="hostproperty">
             <span class="hostlabel">Running processus count</span>
-            <span class="hostvalue">{{ .RunningProcesses }}</span>
+            <span class="hostvalue">{ hostInfo.RunningProcesses }</span>
         </div>
         <div class="hostproperty">
             <span class="hostlabel">Load average</span>
             <span class="hostvalue">
-                1 min : {{ .LoadAverage1 }} 5 min : {{ .LoadAverage5 }} 15 min : {{ .LoadAverage15 }}
+                1 min : { hostInfo.LoadAverage1 } 5 min : { hostInfo.LoadAverage5 } 15 min : { hostInfo.LoadAverage15 }
             </span>
         </div>
         <div class="hostproperty">
             <span class="hostlabel">Memory (Total / Free / Cache):</span>
-            <span class="hostvalue">{{ .TotalMemory }} / {{ .FreeMemory }} / {{ .CacheMemory }}</span>
+            <span class="hostvalue">{ hostInfo.TotalMemory } / { hostInfo.FreeMemory } / { hostInfo.CacheMemory }</span>
         </div>
-        <div class="hostproperty">
+        <div class="hostproperty">      
             <span class="hostlabel">Storage (Total / Free):</span>
-            <span class="hostvalue">{{ .TotalDiskSpace }} / {{ .FreeDiskSpace }}</span>
+            <span class="hostvalue">{ hostInfo.TotalDiskSpace } / { hostInfo.FreeDiskSpace }</span>
         </div>
         <div class="hostproperty">
             <span class="hostlabel">Swap (Total / Free):</span>
-            <span class="hostvalue">{{ .TotalSwap }} / {{ .FreeSwap }}</span>
+            <span class="hostvalue">{ hostInfo.TotalSwap } / { hostInfo.FreeSwap }</span>
         </div>
         <div class="hostproperty">
-            <span class="hostlabel">Running in container</span>
-            <span class="hostvalue">{{ .IsRunningInContainer }}</span>
+            <span class="hostlabel">Running in the container</span>
+            <span class="hostvalue">{ hostInfo.IsRunningInContainer }</span>
         </div>
     </div>
 </div>
-{{ end }}
+
+
+}
