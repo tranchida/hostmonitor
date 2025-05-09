@@ -317,7 +317,7 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</span></div><div class=\"hostproperty\"><span class=\"hostlabel\">Running in the container</span> <span class=\"hostvalue\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</span></div><div class=\"hostproperty\"><span class=\"hostlabel\">Running in container</span> <span class=\"hostvalue\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
