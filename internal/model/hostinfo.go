@@ -1,6 +1,7 @@
 package model
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"time"
@@ -14,6 +15,8 @@ import (
 	"github.com/shirou/gopsutil/v4/net"
 	"github.com/shirou/gopsutil/v4/process"
 	"github.com/shirou/gopsutil/v4/sensors"
+	"github.com/tranchida/hostmonitor/internal/telemetry"
+	"go.opentelemetry.io/otel/attribute"
 )
 
 // HostInfo struct
@@ -46,7 +49,10 @@ type HostInfo struct {
 }
 
 // GetHostInfo retrieves and formats host information.
-func GetHostInfo() (HostInfo, error) {
+func GetHostInfo(ctx context.Context) (HostInfo, error) {
+	// Create a span for this operation
+	ctx, span := telemetry.StartSpan(ctx, "model.GetHostInfo")
+	defer span.End()
 	hostname, _ := os.Hostname()
 
 	// extract information from the current host using gopsutil
@@ -77,12 +83,20 @@ func GetHostInfo() (HostInfo, error) {
 	// Get load average
 	loadAvg, err := load.Avg()
 	if err != nil {
+		telemetry.RecordError(ctx, err)
 		return HostInfo{}, err
 	}
+	
+	// Add attributes to the span
+	telemetry.AddAttributes(ctx, 
+		attribute.String("host.name", hostname),
+		attribute.String("host.os", info.OS),
+		attribute.String("host.platform", info.Platform))
 
 	// Get swap memory
 	swap, err := mem.SwapMemory()
 	if err != nil {
+		telemetry.RecordError(ctx, err)
 		return HostInfo{}, err
 	}
 
