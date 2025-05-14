@@ -16,7 +16,9 @@ var contentFS embed.FS
 func newEngine() *echo.Echo {
 
 	e := echo.New()
-	e.Use(middleware.Logger())
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "method=${method}, uri=${uri}, status=${status}\n",
+	}))
 
 	staticfs, _ := fs.Sub(contentFS, "static")
 	e.StaticFS("/static", staticfs)
@@ -35,6 +37,3 @@ func main() {
 	}
 
 }
-
-
-
