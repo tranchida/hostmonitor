@@ -16,8 +16,13 @@ var contentFS embed.FS
 func newEngine() *echo.Echo {
 
 	e := echo.New()
+
+	logformat := "${remote_ip} - - [${time_custom}] \"${method} ${path} ${protocol}\" ${status} ${bytes_out} \"${user_agent}\"\n"
+	customTimeFormat := "2/Jan/2006:15:04:05 -0700"
+
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: "method=${method}, uri=${uri}, status=${status}\n",
+		Format:           logformat,
+		CustomTimeFormat: customTimeFormat,
 	}))
 
 	staticfs, _ := fs.Sub(contentFS, "static")
