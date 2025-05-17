@@ -4,6 +4,7 @@ import (
 	"embed"
 	"fmt"
 	"io/fs"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -36,6 +37,9 @@ func newEngine() *echo.Echo {
 
 func main() {
 	fmt.Println("open browser on this url : http://localhost:8080")
+	info := os.Getenv("INFO")
+
+	fmt.Println("INFO: " + info)
 
 	if err := newEngine().Start(":8080"); err != nil {
 		panic(err)
