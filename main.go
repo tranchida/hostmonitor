@@ -36,12 +36,15 @@ func newEngine() *echo.Echo {
 }
 
 func main() {
-	fmt.Println("open browser on this url : http://localhost:8080")
-	info := os.Getenv("INFO")
 
-	fmt.Println("INFO: " + info)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 
-	if err := newEngine().Start(":8080"); err != nil {
+	fmt.Println("open browser on this url : http://localhost:" + port)
+
+	if err := newEngine().Start(":" + port); err != nil {
 		panic(err)
 	}
 
