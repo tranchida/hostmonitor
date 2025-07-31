@@ -34,7 +34,7 @@ func main() {
 	logger := zap.Must(zap.NewProduction())
 	defer logger.Sync()
 
-	fmt.Println("open browser on : http://localhost:8080")
+	fmt.Println("ouvrir le browser sur : http://localhost:8080")
 
 	if err := newEngine(logger).Run(":8080"); err != nil {
 		panic(err)
