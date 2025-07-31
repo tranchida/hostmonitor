@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/tranchida/hostmonitor/internal/handler"
+	"go.uber.org/zap"
 )
 
 //go:embed template static
@@ -36,6 +37,12 @@ func newEngine() *echo.Echo {
 }
 
 func main() {
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
 	logger := zap.Must(zap.NewProduction())
 	defer logger.Sync()
 
