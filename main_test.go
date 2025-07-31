@@ -6,12 +6,10 @@ import (
 	"os"
 	"strings"
 	"testing"
-
-	"go.uber.org/zap"
 )
 
 func TestHostEndpoint(t *testing.T) {
-	e := newEngine(zap.NewNop())
+	e := newEngine()
 
 	req := httptest.NewRequest(http.MethodGet, "/host", nil)
 	rec := httptest.NewRecorder()
@@ -34,7 +32,7 @@ func TestHostEndpoint(t *testing.T) {
 }
 
 func TestStaticFileNotFound(t *testing.T) {
-	e := newEngine(zap.NewNop())
+	e := newEngine()
 
 	// Try to access a non-existent static file
 	req := httptest.NewRequest(http.MethodGet, "/static/nonexistentfile.txt", nil)

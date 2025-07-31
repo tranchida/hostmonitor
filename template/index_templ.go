@@ -29,7 +29,7 @@ func Index() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Host Information</title><script src=\"static/tailwindcss.js\"></script><style type=\"text/tailwindcss\">\n        .hostproperty {\n            @apply p-4 bg-white border-solid border-1 rounded-md hover:inset-ring-2 hover:inset-ring-sky-800 shadow-md shadow-sky-950;\n        }\n\n        .hostlabel {\n            @apply font-bold block mb-1.5;\n        }\n\n        .hostvalue {\n            @apply break-all;\n        }\n    </style><script src=\"static/htmx.min.js\"></script></head><body class=\"font-sans bg-gray-900 p-4\"><div class=\"bg-sky-600 p-4 rounded-md\" hx-get=\"/host\" hx-trigger=\"load\"><!-- div hx-get=\"/host\" hx-trigger=\"load, every 10s\">\n    </div --></div></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Host Information</title><link href=\"static/style.css\" rel=\"stylesheet\"><script src=\"static/htmx.min.js\"></script></head><body class=\"font-sans bg-gray-900 p-4\"><div class=\"bg-sky-600 p-4 rounded-md\" hx-get=\"/host\" hx-trigger=\"load, every 10s\"></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
