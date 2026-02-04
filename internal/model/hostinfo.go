@@ -75,7 +75,10 @@ func GetHostInfo() (HostInfo, error) {
 				count++
 			}
 		}
-		cpuTemp = fmt.Sprintf("%.0f°C", total/float64(count))
+
+		if count > 0 {
+			cpuTemp = fmt.Sprintf("%.0f°C", total/float64(count))
+		}
 
 	}
 
