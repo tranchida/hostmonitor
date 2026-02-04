@@ -3,6 +3,7 @@ package model
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/dustin/go-humanize"
@@ -18,30 +19,30 @@ import (
 
 // HostInfo struct
 type HostInfo struct {
-	CurrentTime       string
-	Hostname          string
-	Uptime            string
-	OS                string
-	Platform          string
-	PlatformVersion   string
-	CPUP              int
-	CPUV              int
-	TotalMemory       string
-	CacheMemory       string
-	FreeMemory        string
-	TotalDiskSpace    string
-	FreeDiskSpace     string
-	CPUTemperature    string
-	CPUUsage          string
-	LoadAverage1      string
-	LoadAverage5      string
-	LoadAverage15     string
-	TotalSwap         string
-	FreeSwap          string
-	NetworkInterfaces []string
-	RunningProcesses  int
-	KernelVersion     string
-	BootTime          string
+	CurrentTime          string
+	Hostname             string
+	Uptime               string
+	OS                   string
+	Platform             string
+	PlatformVersion      string
+	CPUP                 int
+	CPUV                 int
+	TotalMemory          string
+	CacheMemory          string
+	FreeMemory           string
+	TotalDiskSpace       string
+	FreeDiskSpace        string
+	CPUTemperature       string
+	CPUUsage             string
+	LoadAverage1         string
+	LoadAverage5         string
+	LoadAverage15        string
+	TotalSwap            string
+	FreeSwap             string
+	NetworkInterfaces    []string
+	RunningProcesses     int
+	KernelVersion        string
+	BootTime             string
 	IsRunningInContainer bool
 }
 
@@ -60,14 +61,22 @@ func GetHostInfo() (HostInfo, error) {
 	// Get CPU temperature
 	temps, err := sensors.SensorsTemperatures()
 	cpuTemp := "N/A"
+	total := 0.0
+	count := 0
 	if err == nil && len(temps) > 0 {
-		// Find the first CPU temperature sensor
+		// Find the first CPU
 		for _, temp := range temps {
-			if temp.SensorKey == "coretemp_core_0" {
-				cpuTemp = fmt.Sprintf("%.0f°C", temp.Temperature)
-				break
+			if strings.Contains(temp.SensorKey, "coretemp_core") && temp.Temperature > 0 {
+				total += temp.Temperature
+				count++
+			}
+			if strings.Contains(temp.SensorKey, "tdie") && temp.Temperature > 0 {
+				total += temp.Temperature
+				count++
 			}
 		}
+		cpuTemp = fmt.Sprintf("%.0f°C", total/float64(count))
+
 	}
 
 	// Get CPU usage
@@ -145,14 +154,14 @@ func formatDuration(d time.Duration) string {
 }
 
 func isRunningInContainer() bool {
-    // docker creates a .dockerenv file at the root
-    // of the directory tree inside the container.
-    // if this file exists then the viewer is running
-    // from inside a container so return true
-        
-    if _, err := os.Stat("/.dockerenv"); err == nil {
-        return true
-    }
+	// docker creates a .dockerenv file at the root
+	// of the directory tree inside the container.
+	// if this file exists then the viewer is running
+	// from inside a container so return true
+
+	if _, err := os.Stat("/.dockerenv"); err == nil {
+		return true
+	}
 
 	// podman create a container with the environment variable container=podman
 	if os.Getenv("container") == "podman" {
