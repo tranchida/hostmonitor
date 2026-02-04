@@ -56,7 +56,7 @@ func GetHostInfo() (HostInfo, error) {
 	cpuCountP, _ := cpu.Counts(false)
 	cpuCountV, _ := cpu.Counts(true)
 	memory, _ := mem.VirtualMemory()
-	disk, _ := disk.Usage("/")
+	diskUsage, _ := disk.Usage("/")
 
 	// Get CPU temperature
 	temps, err := sensors.SensorsTemperatures()
@@ -126,8 +126,8 @@ func GetHostInfo() (HostInfo, error) {
 		TotalMemory:       humanize.IBytes(memory.Total),
 		FreeMemory:        humanize.IBytes(memory.Free),
 		CacheMemory:       humanize.IBytes(memory.Cached),
-		TotalDiskSpace:    humanize.IBytes(disk.Total),
-		FreeDiskSpace:     humanize.IBytes(disk.Free),
+		TotalDiskSpace:    humanize.IBytes(diskUsage.Total),
+		FreeDiskSpace:     humanize.IBytes(diskUsage.Free),
 		CPUTemperature:    cpuTemp,
 		CPUUsage:          cpuUsage,
 		LoadAverage1:      fmt.Sprintf("%.2f", loadAvg.Load1),
