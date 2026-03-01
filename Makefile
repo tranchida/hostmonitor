@@ -1,14 +1,16 @@
-tailwind:
-	curl -sL -C - https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64 -o tailwindcss \
-	&& chmod +x tailwindcss
+dev:
+	npm run dev
 
-templ:
-	go tool templ generate
+build:
+	npm run build
 
-live: tailwind
-	go tool air
+preview:
+	npm run preview
 
-build: tailwind templ
-	./tailwindcss  -m -i input.css -o static/style.css
-	go tool templ generate
-	go build -o bin/hostmonitor main.go
+install:
+	npm install
+
+docker-build:
+	docker build -t hostmonitor .
+
+.PHONY: dev build preview install docker-build
