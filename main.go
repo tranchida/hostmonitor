@@ -15,6 +15,9 @@ import (
 //go:embed template static
 var contentFS embed.FS
 
+//go:embed all:frontend/build
+var frontendFS embed.FS
+
 func newEngine() *echo.Echo {
 
 	e := echo.New()
@@ -27,11 +30,24 @@ func newEngine() *echo.Echo {
 		CustomTimeFormat: customTimeFormat,
 	}))
 
+	// CORS middleware for SvelteKit dev server
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:5173", "http://127.0.0.1:5173"},
+		AllowMethods: []string{echo.GET, echo.HEAD, echo.OPTIONS},
+	}))
+
+	// Legacy htmx routes (kept for backward compatibility)
 	staticfs, _ := fs.Sub(contentFS, "static")
 	e.StaticFS("/static", staticfs)
-
-	e.GET("/", handler.IndexHandler)
+	e.GET("/legacy", handler.IndexHandler)
 	e.GET("/host", handler.HostInfoHandler)
+
+	// JSON API
+	e.GET("/api/hostinfo", handler.HostInfoJSONHandler)
+
+	// SvelteKit frontend (static adapter build)
+	frontendBuild, _ := fs.Sub(frontendFS, "frontend/build")
+	e.StaticFS("/", frontendBuild)
 
 	return e
 }

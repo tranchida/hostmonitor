@@ -1,33 +1,45 @@
+# Stage 1: Build the SvelteKit frontend
+FROM node:22-alpine AS frontend-builder
 
+WORKDIR /app/frontend
 
-# Use the official Golang image as the base image
+# Copy frontend package files and install dependencies
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
+
+# Copy frontend source and build
+COPY frontend/ ./
+RUN npm run build
+
+# Stage 2: Build the Go backend
 FROM golang:1.24.2-alpine AS builder
 
-# Set the Current Working Directory inside the container
 WORKDIR /app
 
 # Copy go mod and sum files
 COPY go.mod go.sum ./
 
-# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
+# Download all dependencies
 RUN go mod download
 
-# Copy the source from the current directory to the Working Directory inside the container
+# Copy the source code
 COPY . .
+
+# Copy the built frontend from the previous stage
+COPY --from=frontend-builder /app/frontend/build ./frontend/build
 
 # Build the Go app
 RUN go build -o main .
 
-# Start a new stage from scratch
-FROM alpine:latest  
+# Stage 3: Final minimal image
+FROM alpine:latest
 
-# Set the Current Working Directory inside the container
 WORKDIR /root/
 
-# Copy the Pre-built binary file from the previous stage
+# Copy the binary from the builder stage
 COPY --from=builder /app/main .
 
-# Expose port 8080 to the outside world
+# Expose port 8080
 EXPOSE 8080
 
 # Command to run the executable

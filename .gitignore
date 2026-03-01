@@ -3,3 +3,9 @@ tmp/
 .idea/
 .vscode/
 tailwindcss
+hostmonitor_bin
+
+# Frontend
+frontend/node_modules/
+frontend/.svelte-kit/
+frontend/build/
