@@ -30,8 +30,10 @@ type HostInfo struct {
 	TotalMemory          string
 	CacheMemory          string
 	FreeMemory           string
+	UsedMemory           string
 	TotalDiskSpace       string
 	FreeDiskSpace        string
+	UsedDiskSpace        string
 	CPUTemperature       string
 	CPUUsage             string
 	LoadAverage1         string
@@ -39,11 +41,18 @@ type HostInfo struct {
 	LoadAverage15        string
 	TotalSwap            string
 	FreeSwap             string
+	UsedSwap             string
 	NetworkInterfaces    []string
 	RunningProcesses     int
 	KernelVersion        string
 	BootTime             string
 	IsRunningInContainer bool
+
+	// Raw numeric values for gauges (0-100)
+	CPUUsagePercent  float64
+	MemUsagePercent  float64
+	DiskUsagePercent float64
+	SwapUsagePercent float64
 }
 
 // GetHostInfo retrieves and formats host information.
@@ -84,7 +93,8 @@ func GetHostInfo() (HostInfo, error) {
 
 	// Get CPU usage
 	cpuPercent, _ := cpu.Percent(0, false)
-	cpuUsage := fmt.Sprintf("%.2f%%", cpuPercent[0])
+	cpuUsageVal := cpuPercent[0]
+	cpuUsage := fmt.Sprintf("%.2f%%", cpuUsageVal)
 
 	// Get load average
 	loadAvg, err := load.Avg()
@@ -114,6 +124,14 @@ func GetHostInfo() (HostInfo, error) {
 	// Get boot time
 	bootTime := time.Unix(int64(info.BootTime), 0).Format(time.RFC3339)
 
+	// Calculate usage percentages
+	memUsedPercent := memory.UsedPercent
+	diskUsedPercent := diskUsage.UsedPercent
+	swapUsedPercent := 0.0
+	if swap.Total > 0 {
+		swapUsedPercent = float64(swap.Used) / float64(swap.Total) * 100
+	}
+
 	hostInfo := HostInfo{
 		CurrentTime:       time.Now().Format(time.RFC3339),
 		Hostname:          hostname,
@@ -124,10 +142,12 @@ func GetHostInfo() (HostInfo, error) {
 		CPUP:              cpuCountP,
 		CPUV:              cpuCountV,
 		TotalMemory:       humanize.IBytes(memory.Total),
-		FreeMemory:        humanize.IBytes(memory.Free),
+		FreeMemory:        humanize.IBytes(memory.Available),
+		UsedMemory:        humanize.IBytes(memory.Used),
 		CacheMemory:       humanize.IBytes(memory.Cached),
 		TotalDiskSpace:    humanize.IBytes(diskUsage.Total),
 		FreeDiskSpace:     humanize.IBytes(diskUsage.Free),
+		UsedDiskSpace:     humanize.IBytes(diskUsage.Used),
 		CPUTemperature:    cpuTemp,
 		CPUUsage:          cpuUsage,
 		LoadAverage1:      fmt.Sprintf("%.2f", loadAvg.Load1),
@@ -135,10 +155,16 @@ func GetHostInfo() (HostInfo, error) {
 		LoadAverage15:     fmt.Sprintf("%.2f", loadAvg.Load15),
 		TotalSwap:         humanize.IBytes(swap.Total),
 		FreeSwap:          humanize.IBytes(swap.Free),
+		UsedSwap:          humanize.IBytes(swap.Used),
 		NetworkInterfaces: interfaces,
 		RunningProcesses:  len(processes),
 		KernelVersion:     kernelVersion,
 		BootTime:          bootTime,
+
+		CPUUsagePercent:  cpuUsageVal,
+		MemUsagePercent:  memUsedPercent,
+		DiskUsagePercent: diskUsedPercent,
+		SwapUsagePercent: swapUsedPercent,
 	}
 
 	hostInfo.IsRunningInContainer = isRunningInContainer()
