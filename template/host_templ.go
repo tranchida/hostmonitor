@@ -14,17 +14,27 @@ import (
 	"strconv"
 )
 
-// gaugeColor returns the CSS class based on usage percentage
-func gaugeColor(pct float64) string {
+// gaugeTextColor returns a Tailwind text-color class based on usage percentage
+func gaugeTextColor(pct float64) string {
 	if pct >= 85 {
-		return "gauge-red"
+		return "text-red-400"
 	} else if pct >= 60 {
-		return "gauge-yellow"
+		return "text-amber-400"
 	}
-	return "gauge-green"
+	return "text-emerald-400"
 }
 
-// gaugeWidth returns a CSS width value (0%-100%) clamped
+// gaugeBarClass returns the CSS class for the gauge bar background gradient
+func gaugeBarClass(pct float64) string {
+	if pct >= 85 {
+		return "gauge-bar-red"
+	} else if pct >= 60 {
+		return "gauge-bar-yellow"
+	}
+	return "gauge-bar-green"
+}
+
+// gaugeWidth returns a CSS width value (0%–100%) clamped
 func gaugeWidth(pct float64) string {
 	if pct < 0 {
 		pct = 0
@@ -35,7 +45,7 @@ func gaugeWidth(pct float64) string {
 	return fmt.Sprintf("%.1f%%", pct)
 }
 
-// containerBadge returns a badge label for container status
+// containerBadge returns the label text for container status
 func containerBadge(running bool) string {
 	if running {
 		return "Yes"
@@ -43,12 +53,12 @@ func containerBadge(running bool) string {
 	return "No"
 }
 
-// isContainerBadgeClass returns extra CSS class for container badge
-func isContainerBadgeClass(running bool) string {
+// containerBadgeClass returns the full Tailwind class string for the container badge
+func containerBadgeClass(running bool) string {
 	if running {
-		return "badge-warning"
+		return "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold w-fit bg-amber-950 text-amber-400 border border-amber-900"
 	}
-	return "badge-ok"
+	return "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold w-fit bg-emerald-950 text-emerald-400 border border-emerald-900"
 }
 
 // fmtCPUCount formats CPU count display
@@ -77,40 +87,40 @@ func Host(hostInfo model.HostInfo) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"dashboard\"><!-- ===== SECTION: SYSTÈME ===== --><section class=\"section\" aria-labelledby=\"section-system\"><h2 class=\"section-title\" id=\"section-system\"><svg class=\"section-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><rect x=\"2\" y=\"3\" width=\"20\" height=\"14\" rx=\"2\"></rect> <path d=\"M8 21h8M12 17v4\"></path></svg> Système</h2><div class=\"cards-grid\"><div class=\"card\"><span class=\"card-label\">Hostname</span> <span class=\"card-value text-accent\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"flex flex-col gap-8 pt-6\"><!-- ===== SECTION: SYSTÈME ===== --><section class=\"bg-zinc-900 border border-zinc-800 rounded-xl p-6 transition-colors hover:border-zinc-700\" aria-labelledby=\"section-system\"><h2 class=\"flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 mb-5 pb-3 border-b border-zinc-800\" id=\"section-system\"><svg class=\"w-4 h-4 text-sky-500 shrink-0\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><rect x=\"2\" y=\"3\" width=\"20\" height=\"14\" rx=\"2\"></rect> <path d=\"M8 21h8M12 17v4\"></path></svg> Système</h2><div class=\"grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4\"><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Hostname</span> <span class=\"text-sm font-semibold text-sky-400 break-all\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.Hostname)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 67, Col: 72}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 77, Col: 94}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</span></div><div class=\"card\"><span class=\"card-label\">OS</span> <span class=\"card-value\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</span></div><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">OS</span> <span class=\"text-sm text-zinc-200 break-all\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.OS)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 71, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 81, Col: 75}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span></div><div class=\"card\"><span class=\"card-label\">Platform</span> <span class=\"card-value\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span></div><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Platform</span> <span class=\"text-sm text-zinc-200 break-all\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.Platform)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 75, Col: 60}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 85, Col: 81}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -123,69 +133,69 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.PlatformVersion)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 75, Col: 89}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 85, Col: 110}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</span></div><div class=\"card\"><span class=\"card-label\">Kernel</span> <span class=\"card-value font-mono text-sm\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</span></div><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Kernel</span> <span class=\"text-sm text-zinc-200 font-mono break-all\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.KernelVersion)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 79, Col: 83}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 89, Col: 96}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</span></div><div class=\"card\"><span class=\"card-label\">Boot time</span> <span class=\"card-value font-mono text-sm\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</span></div><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Boot time</span> <span class=\"text-sm text-zinc-200 font-mono break-all\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.BootTime)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 83, Col: 78}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 93, Col: 91}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</span></div><div class=\"card\"><span class=\"card-label\">Uptime</span> <span class=\"card-value\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</span></div><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Uptime</span> <span class=\"text-sm text-zinc-200 break-all\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.Uptime)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 87, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 97, Col: 79}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</span></div><div class=\"card\"><span class=\"card-label\">Processes</span> <span class=\"card-value text-2xl font-bold\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</span></div><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Processes</span> <span class=\"text-2xl font-bold text-zinc-100\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(hostInfo.RunningProcesses))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 91, Col: 101}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 101, Col: 104}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</span></div><div class=\"card\"><span class=\"card-label\">Container</span> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</span></div><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Container</span> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var10 = []any{"badge " + isContainerBadgeClass(hostInfo.IsRunningInContainer)}
+		var templ_7745c5c3_Var10 = []any{containerBadgeClass(hostInfo.IsRunningInContainer)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var10...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -210,59 +220,59 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var12 string
 		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(containerBadge(hostInfo.IsRunningInContainer))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 96, Col: 67}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 106, Col: 67}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</span></div><div class=\"card\"><span class=\"card-label\">Last update</span> <span class=\"card-value font-mono text-sm\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</span></div><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Last update</span> <span class=\"text-sm text-zinc-200 font-mono break-all\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var13 string
 		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.CurrentTime)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 101, Col: 81}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 111, Col: 94}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</span></div></div></section><!-- ===== SECTION: CPU ===== --><section class=\"section\" aria-labelledby=\"section-cpu\"><h2 class=\"section-title\" id=\"section-cpu\"><svg class=\"section-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"2\"></rect> <rect x=\"9\" y=\"9\" width=\"6\" height=\"6\"></rect> <path d=\"M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2\"></path></svg> CPU</h2><div class=\"cards-grid\"><div class=\"card\"><span class=\"card-label\">Cores</span> <span class=\"card-value\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</span></div></div></section><!-- ===== SECTION: CPU ===== --><section class=\"bg-zinc-900 border border-zinc-800 rounded-xl p-6 transition-colors hover:border-zinc-700\" aria-labelledby=\"section-cpu\"><h2 class=\"flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 mb-5 pb-3 border-b border-zinc-800\" id=\"section-cpu\"><svg class=\"w-4 h-4 text-sky-500 shrink-0\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"2\"></rect> <rect x=\"9\" y=\"9\" width=\"6\" height=\"6\"></rect> <path d=\"M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2\"></path></svg> CPU</h2><div class=\"grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4\"><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Cores</span> <span class=\"text-sm text-zinc-200 break-all\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var14 string
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(fmtCPUCount(hostInfo.CPUP, hostInfo.CPUV))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 119, Col: 84}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 129, Col: 105}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</span></div><div class=\"card\"><span class=\"card-label\">Temperature</span> <span class=\"card-value text-lg font-semibold\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</span></div><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Temperature</span> <span class=\"text-lg font-semibold text-zinc-200\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var15 string
 		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.CPUTemperature)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 123, Col: 88}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 133, Col: 91}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</span></div><div class=\"card card-wide\"><span class=\"card-label\">Usage</span><div class=\"gauge-container\" role=\"progressbar\" aria-valuenow=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</span></div><div class=\"col-span-2 max-sm:col-span-full bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Usage</span><div class=\"w-full\" role=\"progressbar\" aria-valuenow=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(gaugeWidth(hostInfo.CPUUsagePercent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 127, Col: 116}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 137, Col: 107}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
@@ -275,17 +285,17 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs("CPU usage: " + hostInfo.CPUUsage)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 127, Col: 203}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 137, Col: 194}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "\"><div class=\"gauge-header\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "\"><div class=\"flex items-baseline justify-between mb-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var18 = []any{"gauge-value " + gaugeColor(hostInfo.CPUUsagePercent)}
+		var templ_7745c5c3_Var18 = []any{"text-lg font-bold " + gaugeTextColor(hostInfo.CPUUsagePercent)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var18...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -310,17 +320,17 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.CPUUsage)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 129, Col: 113}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 139, Col: 123}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</span></div><div class=\"gauge-track\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</span></div><div class=\"h-2 bg-zinc-800 rounded-full overflow-hidden\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var21 = []any{"gauge-bar " + gaugeColor(hostInfo.CPUUsagePercent)}
+		var templ_7745c5c3_Var21 = []any{"h-full rounded-full min-w-[2px] transition-[width] duration-[600ms] ease-in-out " + gaugeBarClass(hostInfo.CPUUsagePercent)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var21...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -345,69 +355,69 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var23 string
 		templ_7745c5c3_Var23, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues("width: " + gaugeWidth(hostInfo.CPUUsagePercent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 132, Col: 147}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 142, Col: 220}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "\"></div></div></div></div><div class=\"card card-wide\"><span class=\"card-label\">Load Average</span><div class=\"load-avg-grid\"><div class=\"load-item\"><span class=\"load-period\">1 min</span> <span class=\"load-val\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "\"></div></div></div></div><div class=\"col-span-2 max-sm:col-span-full bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Load Average</span><div class=\"grid grid-cols-3 gap-3 mt-1\"><div class=\"flex flex-col items-center gap-1 bg-zinc-800/80 rounded-md p-2.5\"><span class=\"text-[11px] font-semibold uppercase tracking-wider text-zinc-500\">1 min</span> <span class=\"text-xl font-bold text-zinc-200 font-mono\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var24 string
 		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.LoadAverage1)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 141, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 151, Col: 103}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</span></div><div class=\"load-item\"><span class=\"load-period\">5 min</span> <span class=\"load-val\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</span></div><div class=\"flex flex-col items-center gap-1 bg-zinc-800/80 rounded-md p-2.5\"><span class=\"text-[11px] font-semibold uppercase tracking-wider text-zinc-500\">5 min</span> <span class=\"text-xl font-bold text-zinc-200 font-mono\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var25 string
 		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.LoadAverage5)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 145, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 155, Col: 103}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</span></div><div class=\"load-item\"><span class=\"load-period\">15 min</span> <span class=\"load-val\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</span></div><div class=\"flex flex-col items-center gap-1 bg-zinc-800/80 rounded-md p-2.5\"><span class=\"text-[11px] font-semibold uppercase tracking-wider text-zinc-500\">15 min</span> <span class=\"text-xl font-bold text-zinc-200 font-mono\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var26 string
 		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.LoadAverage15)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 149, Col: 71}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 159, Col: 104}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</span></div></div></div></div></section><!-- ===== SECTION: MÉMOIRE ===== --><section class=\"section\" aria-labelledby=\"section-memory\"><h2 class=\"section-title\" id=\"section-memory\"><svg class=\"section-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M6 19v-3M10 19v-3M14 19v-3M18 19v-3M6 5v3M10 5v3M14 5v3M18 5v3\"></path> <rect x=\"2\" y=\"8\" width=\"20\" height=\"8\" rx=\"1\"></rect></svg> Mémoire</h2><div class=\"cards-grid\"><div class=\"card\"><span class=\"card-label\">Total</span> <span class=\"card-value text-lg font-semibold\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</span></div></div></div></div></section><!-- ===== SECTION: MÉMOIRE ===== --><section class=\"bg-zinc-900 border border-zinc-800 rounded-xl p-6 transition-colors hover:border-zinc-700\" aria-labelledby=\"section-memory\"><h2 class=\"flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 mb-5 pb-3 border-b border-zinc-800\" id=\"section-memory\"><svg class=\"w-4 h-4 text-sky-500 shrink-0\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M6 19v-3M10 19v-3M14 19v-3M18 19v-3M6 5v3M10 5v3M14 5v3M18 5v3\"></path> <rect x=\"2\" y=\"8\" width=\"20\" height=\"8\" rx=\"1\"></rect></svg> Mémoire</h2><div class=\"grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4\"><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Total</span> <span class=\"text-lg font-semibold text-zinc-200\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var27 string
 		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.TotalMemory)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 168, Col: 85}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 178, Col: 88}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</span></div><div class=\"card\"><span class=\"card-label\">Used</span> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</span></div><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Used</span> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var28 = []any{"card-value text-lg font-semibold " + gaugeColor(hostInfo.MemUsagePercent)}
+		var templ_7745c5c3_Var28 = []any{"text-lg font-semibold " + gaugeTextColor(hostInfo.MemUsagePercent)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var28...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -432,46 +442,46 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var30 string
 		templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.UsedMemory)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 172, Col: 128}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 182, Col: 121}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</span></div><div class=\"card\"><span class=\"card-label\">Free</span> <span class=\"card-value text-lg font-semibold text-zinc-300\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</span></div><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Free</span> <span class=\"text-lg font-semibold text-zinc-300\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var31 string
 		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.FreeMemory)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 176, Col: 98}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 186, Col: 87}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</span></div><div class=\"card\"><span class=\"card-label\">Cache</span> <span class=\"card-value text-lg font-semibold text-zinc-400\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</span></div><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Cache</span> <span class=\"text-lg font-semibold text-zinc-400\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var32 string
 		templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.CacheMemory)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 180, Col: 99}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 190, Col: 88}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</span></div><div class=\"card card-full\"><span class=\"card-label\">RAM Usage</span><div class=\"gauge-container\" role=\"progressbar\" aria-valuenow=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</span></div><div class=\"col-span-full bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">RAM Usage</span><div class=\"w-full\" role=\"progressbar\" aria-valuenow=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var33 string
 		templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(gaugeWidth(hostInfo.MemUsagePercent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 184, Col: 116}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 194, Col: 107}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
 		if templ_7745c5c3_Err != nil {
@@ -484,17 +494,17 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var34 string
 		templ_7745c5c3_Var34, templ_7745c5c3_Err = templ.JoinStringErrs("Memory usage: " + fmt.Sprintf("%.1f%%", hostInfo.MemUsagePercent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 184, Col: 236}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 194, Col: 227}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var34))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "\"><div class=\"gauge-header\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "\"><div class=\"flex items-baseline justify-between mb-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var35 = []any{"gauge-value " + gaugeColor(hostInfo.MemUsagePercent)}
+		var templ_7745c5c3_Var35 = []any{"text-lg font-bold " + gaugeTextColor(hostInfo.MemUsagePercent)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var35...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -519,20 +529,20 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var37 string
 		templ_7745c5c3_Var37, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f%%", hostInfo.MemUsagePercent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 186, Col: 143}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 196, Col: 153}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var37))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</span> <span class=\"gauge-sub\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</span> <span class=\"text-xs text-zinc-500\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var38 string
 		templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.UsedMemory)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 187, Col: 69}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 197, Col: 81}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
 		if templ_7745c5c3_Err != nil {
@@ -545,17 +555,17 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var39 string
 		templ_7745c5c3_Var39, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.TotalMemory)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 187, Col: 96}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 197, Col: 108}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var39))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</span></div><div class=\"gauge-track\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</span></div><div class=\"h-2 bg-zinc-800 rounded-full overflow-hidden\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var40 = []any{"gauge-bar " + gaugeColor(hostInfo.MemUsagePercent)}
+		var templ_7745c5c3_Var40 = []any{"h-full rounded-full min-w-[2px] transition-[width] duration-[600ms] ease-in-out " + gaugeBarClass(hostInfo.MemUsagePercent)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var40...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -580,20 +590,20 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var42 string
 		templ_7745c5c3_Var42, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues("width: " + gaugeWidth(hostInfo.MemUsagePercent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 190, Col: 147}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 200, Col: 220}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var42))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "\"></div></div></div></div><div class=\"card card-full\"><span class=\"card-label\">Swap Usage</span><div class=\"gauge-container\" role=\"progressbar\" aria-valuenow=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "\"></div></div></div></div><div class=\"col-span-full bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Swap Usage</span><div class=\"w-full\" role=\"progressbar\" aria-valuenow=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var43 string
 		templ_7745c5c3_Var43, templ_7745c5c3_Err = templ.JoinStringErrs(gaugeWidth(hostInfo.SwapUsagePercent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 196, Col: 117}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 206, Col: 108}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var43))
 		if templ_7745c5c3_Err != nil {
@@ -606,17 +616,17 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var44 string
 		templ_7745c5c3_Var44, templ_7745c5c3_Err = templ.JoinStringErrs("Swap usage: " + fmt.Sprintf("%.1f%%", hostInfo.SwapUsagePercent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 196, Col: 236}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 206, Col: 227}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var44))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\"><div class=\"gauge-header\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\"><div class=\"flex items-baseline justify-between mb-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var45 = []any{"gauge-value " + gaugeColor(hostInfo.SwapUsagePercent)}
+		var templ_7745c5c3_Var45 = []any{"text-lg font-bold " + gaugeTextColor(hostInfo.SwapUsagePercent)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var45...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -641,20 +651,20 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var47 string
 		templ_7745c5c3_Var47, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f%%", hostInfo.SwapUsagePercent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 198, Col: 145}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 208, Col: 155}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var47))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "</span> <span class=\"gauge-sub\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "</span> <span class=\"text-xs text-zinc-500\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var48 string
 		templ_7745c5c3_Var48, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.UsedSwap)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 199, Col: 67}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 209, Col: 79}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var48))
 		if templ_7745c5c3_Err != nil {
@@ -667,17 +677,17 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var49 string
 		templ_7745c5c3_Var49, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.TotalSwap)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 199, Col: 92}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 209, Col: 104}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var49))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "</span></div><div class=\"gauge-track\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "</span></div><div class=\"h-2 bg-zinc-800 rounded-full overflow-hidden\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var50 = []any{"gauge-bar " + gaugeColor(hostInfo.SwapUsagePercent)}
+		var templ_7745c5c3_Var50 = []any{"h-full rounded-full min-w-[2px] transition-[width] duration-[600ms] ease-in-out " + gaugeBarClass(hostInfo.SwapUsagePercent)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var50...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -702,30 +712,30 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var52 string
 		templ_7745c5c3_Var52, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues("width: " + gaugeWidth(hostInfo.SwapUsagePercent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 202, Col: 149}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 212, Col: 222}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var52))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "\"></div></div></div></div></div></section><!-- ===== SECTION: DISQUE ===== --><section class=\"section\" aria-labelledby=\"section-disk\"><h2 class=\"section-title\" id=\"section-disk\"><svg class=\"section-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><ellipse cx=\"12\" cy=\"5\" rx=\"9\" ry=\"3\"></ellipse> <path d=\"M21 12c0 1.657-4.03 3-9 3S3 13.657 3 12\"></path> <path d=\"M3 5v14c0 1.657 4.03 3 9 3s9-1.343 9-3V5\"></path></svg> Disque</h2><div class=\"cards-grid\"><div class=\"card\"><span class=\"card-label\">Total</span> <span class=\"card-value text-lg font-semibold\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "\"></div></div></div></div></div></section><!-- ===== SECTION: DISQUE ===== --><section class=\"bg-zinc-900 border border-zinc-800 rounded-xl p-6 transition-colors hover:border-zinc-700\" aria-labelledby=\"section-disk\"><h2 class=\"flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 mb-5 pb-3 border-b border-zinc-800\" id=\"section-disk\"><svg class=\"w-4 h-4 text-sky-500 shrink-0\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><ellipse cx=\"12\" cy=\"5\" rx=\"9\" ry=\"3\"></ellipse> <path d=\"M21 12c0 1.657-4.03 3-9 3S3 13.657 3 12\"></path> <path d=\"M3 5v14c0 1.657 4.03 3 9 3s9-1.343 9-3V5\"></path></svg> Disque</h2><div class=\"grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4\"><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Total</span> <span class=\"text-lg font-semibold text-zinc-200\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var53 string
 		templ_7745c5c3_Var53, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.TotalDiskSpace)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 222, Col: 88}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 232, Col: 91}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var53))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 53, "</span></div><div class=\"card\"><span class=\"card-label\">Used</span> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 53, "</span></div><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Used</span> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var54 = []any{"card-value text-lg font-semibold " + gaugeColor(hostInfo.DiskUsagePercent)}
+		var templ_7745c5c3_Var54 = []any{"text-lg font-semibold " + gaugeTextColor(hostInfo.DiskUsagePercent)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var54...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -750,33 +760,33 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var56 string
 		templ_7745c5c3_Var56, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.UsedDiskSpace)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 226, Col: 132}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 236, Col: 125}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var56))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, "</span></div><div class=\"card\"><span class=\"card-label\">Free</span> <span class=\"card-value text-lg font-semibold text-zinc-300\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, "</span></div><div class=\"bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Free</span> <span class=\"text-lg font-semibold text-zinc-300\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var57 string
 		templ_7745c5c3_Var57, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.FreeDiskSpace)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 230, Col: 101}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 240, Col: 90}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var57))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, "</span></div><div class=\"card card-full\"><span class=\"card-label\">Disk Usage (/ )</span><div class=\"gauge-container\" role=\"progressbar\" aria-valuenow=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, "</span></div><div class=\"col-span-full bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Disk Usage (/)</span><div class=\"w-full\" role=\"progressbar\" aria-valuenow=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var58 string
 		templ_7745c5c3_Var58, templ_7745c5c3_Err = templ.JoinStringErrs(gaugeWidth(hostInfo.DiskUsagePercent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 234, Col: 117}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 244, Col: 108}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var58))
 		if templ_7745c5c3_Err != nil {
@@ -789,17 +799,17 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var59 string
 		templ_7745c5c3_Var59, templ_7745c5c3_Err = templ.JoinStringErrs("Disk usage: " + fmt.Sprintf("%.1f%%", hostInfo.DiskUsagePercent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 234, Col: 236}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 244, Col: 227}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var59))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 59, "\"><div class=\"gauge-header\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 59, "\"><div class=\"flex items-baseline justify-between mb-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var60 = []any{"gauge-value " + gaugeColor(hostInfo.DiskUsagePercent)}
+		var templ_7745c5c3_Var60 = []any{"text-lg font-bold " + gaugeTextColor(hostInfo.DiskUsagePercent)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var60...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -824,20 +834,20 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var62 string
 		templ_7745c5c3_Var62, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f%%", hostInfo.DiskUsagePercent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 236, Col: 145}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 246, Col: 155}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var62))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 62, "</span> <span class=\"gauge-sub\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 62, "</span> <span class=\"text-xs text-zinc-500\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var63 string
 		templ_7745c5c3_Var63, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.UsedDiskSpace)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 237, Col: 72}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 247, Col: 84}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var63))
 		if templ_7745c5c3_Err != nil {
@@ -850,17 +860,17 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var64 string
 		templ_7745c5c3_Var64, templ_7745c5c3_Err = templ.JoinStringErrs(hostInfo.TotalDiskSpace)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 237, Col: 102}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 247, Col: 114}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var64))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 64, "</span></div><div class=\"gauge-track\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 64, "</span></div><div class=\"h-2 bg-zinc-800 rounded-full overflow-hidden\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var65 = []any{"gauge-bar " + gaugeColor(hostInfo.DiskUsagePercent)}
+		var templ_7745c5c3_Var65 = []any{"h-full rounded-full min-w-[2px] transition-[width] duration-[600ms] ease-in-out " + gaugeBarClass(hostInfo.DiskUsagePercent)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var65...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -885,25 +895,25 @@ func Host(hostInfo model.HostInfo) templ.Component {
 		var templ_7745c5c3_Var67 string
 		templ_7745c5c3_Var67, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues("width: " + gaugeWidth(hostInfo.DiskUsagePercent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 240, Col: 149}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 250, Col: 222}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var67))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 67, "\"></div></div></div></div></div></section><!-- ===== SECTION: RÉSEAU ===== --><section class=\"section\" aria-labelledby=\"section-network\"><h2 class=\"section-title\" id=\"section-network\"><svg class=\"section-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18\"></path></svg> Réseau</h2><div class=\"cards-grid\"><div class=\"card card-full\"><span class=\"card-label\">Network Interfaces</span><div class=\"iface-list\" role=\"list\" aria-label=\"Network interfaces\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 67, "\"></div></div></div></div></div></section><!-- ===== SECTION: RÉSEAU ===== --><section class=\"bg-zinc-900 border border-zinc-800 rounded-xl p-6 transition-colors hover:border-zinc-700\" aria-labelledby=\"section-network\"><h2 class=\"flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 mb-5 pb-3 border-b border-zinc-800\" id=\"section-network\"><svg class=\"w-4 h-4 text-sky-500 shrink-0\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18\"></path></svg> Réseau</h2><div class=\"grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4\"><div class=\"col-span-full bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80\"><span class=\"text-xs font-semibold uppercase tracking-wider text-zinc-500\">Network Interfaces</span><div class=\"flex flex-wrap gap-2 mt-1\" role=\"list\" aria-label=\"Network interfaces\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		for _, iface := range hostInfo.NetworkInterfaces {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 68, "<span class=\"iface-badge\" role=\"listitem\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 68, "<span class=\"inline-flex items-center px-2.5 py-1 bg-zinc-800 border border-zinc-700 rounded-md text-[13px] font-medium text-sky-400 font-mono\" role=\"listitem\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var68 string
 			templ_7745c5c3_Var68, templ_7745c5c3_Err = templ.JoinStringErrs(iface)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 260, Col: 73}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `template/host.templ`, Line: 270, Col: 191}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var68))
 			if templ_7745c5c3_Err != nil {

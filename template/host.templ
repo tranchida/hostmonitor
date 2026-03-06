@@ -6,17 +6,27 @@ import (
 	"github.com/tranchida/hostmonitor/internal/model"
 )
 
-// gaugeColor returns the CSS class based on usage percentage
-func gaugeColor(pct float64) string {
+// gaugeTextColor returns a Tailwind text-color class based on usage percentage
+func gaugeTextColor(pct float64) string {
 	if pct >= 85 {
-		return "gauge-red"
+		return "text-red-400"
 	} else if pct >= 60 {
-		return "gauge-yellow"
+		return "text-amber-400"
 	}
-	return "gauge-green"
+	return "text-emerald-400"
 }
 
-// gaugeWidth returns a CSS width value (0%-100%) clamped
+// gaugeBarClass returns the CSS class for the gauge bar background gradient
+func gaugeBarClass(pct float64) string {
+	if pct >= 85 {
+		return "gauge-bar-red"
+	} else if pct >= 60 {
+		return "gauge-bar-yellow"
+	}
+	return "gauge-bar-green"
+}
+
+// gaugeWidth returns a CSS width value (0%–100%) clamped
 func gaugeWidth(pct float64) string {
 	if pct < 0 {
 		pct = 0
@@ -27,7 +37,7 @@ func gaugeWidth(pct float64) string {
 	return fmt.Sprintf("%.1f%%", pct)
 }
 
-// containerBadge returns a badge label for container status
+// containerBadge returns the label text for container status
 func containerBadge(running bool) string {
 	if running {
 		return "Yes"
@@ -35,12 +45,12 @@ func containerBadge(running bool) string {
 	return "No"
 }
 
-// isContainerBadgeClass returns extra CSS class for container badge
-func isContainerBadgeClass(running bool) string {
+// containerBadgeClass returns the full Tailwind class string for the container badge
+func containerBadgeClass(running bool) string {
 	if running {
-		return "badge-warning"
+		return "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold w-fit bg-amber-950 text-amber-400 border border-amber-900"
 	}
-	return "badge-ok"
+	return "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold w-fit bg-emerald-950 text-emerald-400 border border-emerald-900"
 }
 
 // fmtCPUCount formats CPU count display
@@ -50,103 +60,103 @@ func fmtCPUCount(p int, v int) string {
 
 templ Host(hostInfo model.HostInfo) {
 
-<div class="dashboard">
+<div class="flex flex-col gap-8 pt-6">
 
     <!-- ===== SECTION: SYSTÈME ===== -->
-    <section class="section" aria-labelledby="section-system">
-        <h2 class="section-title" id="section-system">
-            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <section class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 transition-colors hover:border-zinc-700" aria-labelledby="section-system">
+        <h2 class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 mb-5 pb-3 border-b border-zinc-800" id="section-system">
+            <svg class="w-4 h-4 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <rect x="2" y="3" width="20" height="14" rx="2"/>
                 <path d="M8 21h8M12 17v4"/>
             </svg>
             Système
         </h2>
-        <div class="cards-grid">
-            <div class="card">
-                <span class="card-label">Hostname</span>
-                <span class="card-value text-accent">{ hostInfo.Hostname }</span>
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Hostname</span>
+                <span class="text-sm font-semibold text-sky-400 break-all">{ hostInfo.Hostname }</span>
             </div>
-            <div class="card">
-                <span class="card-label">OS</span>
-                <span class="card-value">{ hostInfo.OS }</span>
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">OS</span>
+                <span class="text-sm text-zinc-200 break-all">{ hostInfo.OS }</span>
             </div>
-            <div class="card">
-                <span class="card-label">Platform</span>
-                <span class="card-value">{ hostInfo.Platform } { hostInfo.PlatformVersion }</span>
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Platform</span>
+                <span class="text-sm text-zinc-200 break-all">{ hostInfo.Platform } { hostInfo.PlatformVersion }</span>
             </div>
-            <div class="card">
-                <span class="card-label">Kernel</span>
-                <span class="card-value font-mono text-sm">{ hostInfo.KernelVersion }</span>
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Kernel</span>
+                <span class="text-sm text-zinc-200 font-mono break-all">{ hostInfo.KernelVersion }</span>
             </div>
-            <div class="card">
-                <span class="card-label">Boot time</span>
-                <span class="card-value font-mono text-sm">{ hostInfo.BootTime }</span>
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Boot time</span>
+                <span class="text-sm text-zinc-200 font-mono break-all">{ hostInfo.BootTime }</span>
             </div>
-            <div class="card">
-                <span class="card-label">Uptime</span>
-                <span class="card-value">{ hostInfo.Uptime }</span>
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Uptime</span>
+                <span class="text-sm text-zinc-200 break-all">{ hostInfo.Uptime }</span>
             </div>
-            <div class="card">
-                <span class="card-label">Processes</span>
-                <span class="card-value text-2xl font-bold">{ strconv.Itoa(hostInfo.RunningProcesses) }</span>
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Processes</span>
+                <span class="text-2xl font-bold text-zinc-100">{ strconv.Itoa(hostInfo.RunningProcesses) }</span>
             </div>
-            <div class="card">
-                <span class="card-label">Container</span>
-                <span class={ "badge " + isContainerBadgeClass(hostInfo.IsRunningInContainer) }>
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Container</span>
+                <span class={ containerBadgeClass(hostInfo.IsRunningInContainer) }>
                     { containerBadge(hostInfo.IsRunningInContainer) }
                 </span>
             </div>
-            <div class="card">
-                <span class="card-label">Last update</span>
-                <span class="card-value font-mono text-sm">{ hostInfo.CurrentTime }</span>
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Last update</span>
+                <span class="text-sm text-zinc-200 font-mono break-all">{ hostInfo.CurrentTime }</span>
             </div>
         </div>
     </section>
 
     <!-- ===== SECTION: CPU ===== -->
-    <section class="section" aria-labelledby="section-cpu">
-        <h2 class="section-title" id="section-cpu">
-            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <section class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 transition-colors hover:border-zinc-700" aria-labelledby="section-cpu">
+        <h2 class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 mb-5 pb-3 border-b border-zinc-800" id="section-cpu">
+            <svg class="w-4 h-4 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <rect x="4" y="4" width="16" height="16" rx="2"/>
                 <rect x="9" y="9" width="6" height="6"/>
                 <path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/>
             </svg>
             CPU
         </h2>
-        <div class="cards-grid">
-            <div class="card">
-                <span class="card-label">Cores</span>
-                <span class="card-value">{ fmtCPUCount(hostInfo.CPUP, hostInfo.CPUV) }</span>
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Cores</span>
+                <span class="text-sm text-zinc-200 break-all">{ fmtCPUCount(hostInfo.CPUP, hostInfo.CPUV) }</span>
             </div>
-            <div class="card">
-                <span class="card-label">Temperature</span>
-                <span class="card-value text-lg font-semibold">{ hostInfo.CPUTemperature }</span>
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Temperature</span>
+                <span class="text-lg font-semibold text-zinc-200">{ hostInfo.CPUTemperature }</span>
             </div>
-            <div class="card card-wide">
-                <span class="card-label">Usage</span>
-                <div class="gauge-container" role="progressbar" aria-valuenow={ gaugeWidth(hostInfo.CPUUsagePercent) } aria-valuemin="0" aria-valuemax="100" aria-label={ "CPU usage: " + hostInfo.CPUUsage }>
-                    <div class="gauge-header">
-                        <span class={ "gauge-value " + gaugeColor(hostInfo.CPUUsagePercent) }>{ hostInfo.CPUUsage }</span>
+            <div class="col-span-2 max-sm:col-span-full bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Usage</span>
+                <div class="w-full" role="progressbar" aria-valuenow={ gaugeWidth(hostInfo.CPUUsagePercent) } aria-valuemin="0" aria-valuemax="100" aria-label={ "CPU usage: " + hostInfo.CPUUsage }>
+                    <div class="flex items-baseline justify-between mb-2">
+                        <span class={ "text-lg font-bold " + gaugeTextColor(hostInfo.CPUUsagePercent) }>{ hostInfo.CPUUsage }</span>
                     </div>
-                    <div class="gauge-track">
-                        <div class={ "gauge-bar " + gaugeColor(hostInfo.CPUUsagePercent) } style={ "width: " + gaugeWidth(hostInfo.CPUUsagePercent) }></div>
+                    <div class="h-2 bg-zinc-800 rounded-full overflow-hidden">
+                        <div class={ "h-full rounded-full min-w-[2px] transition-[width] duration-[600ms] ease-in-out " + gaugeBarClass(hostInfo.CPUUsagePercent) } style={ "width: " + gaugeWidth(hostInfo.CPUUsagePercent) }></div>
                     </div>
                 </div>
             </div>
-            <div class="card card-wide">
-                <span class="card-label">Load Average</span>
-                <div class="load-avg-grid">
-                    <div class="load-item">
-                        <span class="load-period">1 min</span>
-                        <span class="load-val">{ hostInfo.LoadAverage1 }</span>
+            <div class="col-span-2 max-sm:col-span-full bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Load Average</span>
+                <div class="grid grid-cols-3 gap-3 mt-1">
+                    <div class="flex flex-col items-center gap-1 bg-zinc-800/80 rounded-md p-2.5">
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">1 min</span>
+                        <span class="text-xl font-bold text-zinc-200 font-mono">{ hostInfo.LoadAverage1 }</span>
                     </div>
-                    <div class="load-item">
-                        <span class="load-period">5 min</span>
-                        <span class="load-val">{ hostInfo.LoadAverage5 }</span>
+                    <div class="flex flex-col items-center gap-1 bg-zinc-800/80 rounded-md p-2.5">
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">5 min</span>
+                        <span class="text-xl font-bold text-zinc-200 font-mono">{ hostInfo.LoadAverage5 }</span>
                     </div>
-                    <div class="load-item">
-                        <span class="load-period">15 min</span>
-                        <span class="load-val">{ hostInfo.LoadAverage15 }</span>
+                    <div class="flex flex-col items-center gap-1 bg-zinc-800/80 rounded-md p-2.5">
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">15 min</span>
+                        <span class="text-xl font-bold text-zinc-200 font-mono">{ hostInfo.LoadAverage15 }</span>
                     </div>
                 </div>
             </div>
@@ -154,52 +164,52 @@ templ Host(hostInfo model.HostInfo) {
     </section>
 
     <!-- ===== SECTION: MÉMOIRE ===== -->
-    <section class="section" aria-labelledby="section-memory">
-        <h2 class="section-title" id="section-memory">
-            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <section class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 transition-colors hover:border-zinc-700" aria-labelledby="section-memory">
+        <h2 class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 mb-5 pb-3 border-b border-zinc-800" id="section-memory">
+            <svg class="w-4 h-4 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M6 19v-3M10 19v-3M14 19v-3M18 19v-3M6 5v3M10 5v3M14 5v3M18 5v3"/>
                 <rect x="2" y="8" width="20" height="8" rx="1"/>
             </svg>
             Mémoire
         </h2>
-        <div class="cards-grid">
-            <div class="card">
-                <span class="card-label">Total</span>
-                <span class="card-value text-lg font-semibold">{ hostInfo.TotalMemory }</span>
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Total</span>
+                <span class="text-lg font-semibold text-zinc-200">{ hostInfo.TotalMemory }</span>
             </div>
-            <div class="card">
-                <span class="card-label">Used</span>
-                <span class={ "card-value text-lg font-semibold " + gaugeColor(hostInfo.MemUsagePercent) }>{ hostInfo.UsedMemory }</span>
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Used</span>
+                <span class={ "text-lg font-semibold " + gaugeTextColor(hostInfo.MemUsagePercent) }>{ hostInfo.UsedMemory }</span>
             </div>
-            <div class="card">
-                <span class="card-label">Free</span>
-                <span class="card-value text-lg font-semibold text-zinc-300">{ hostInfo.FreeMemory }</span>
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Free</span>
+                <span class="text-lg font-semibold text-zinc-300">{ hostInfo.FreeMemory }</span>
             </div>
-            <div class="card">
-                <span class="card-label">Cache</span>
-                <span class="card-value text-lg font-semibold text-zinc-400">{ hostInfo.CacheMemory }</span>
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Cache</span>
+                <span class="text-lg font-semibold text-zinc-400">{ hostInfo.CacheMemory }</span>
             </div>
-            <div class="card card-full">
-                <span class="card-label">RAM Usage</span>
-                <div class="gauge-container" role="progressbar" aria-valuenow={ gaugeWidth(hostInfo.MemUsagePercent) } aria-valuemin="0" aria-valuemax="100" aria-label={ "Memory usage: " + fmt.Sprintf("%.1f%%", hostInfo.MemUsagePercent) }>
-                    <div class="gauge-header">
-                        <span class={ "gauge-value " + gaugeColor(hostInfo.MemUsagePercent) }>{ fmt.Sprintf("%.1f%%", hostInfo.MemUsagePercent) }</span>
-                        <span class="gauge-sub">{ hostInfo.UsedMemory } / { hostInfo.TotalMemory }</span>
+            <div class="col-span-full bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">RAM Usage</span>
+                <div class="w-full" role="progressbar" aria-valuenow={ gaugeWidth(hostInfo.MemUsagePercent) } aria-valuemin="0" aria-valuemax="100" aria-label={ "Memory usage: " + fmt.Sprintf("%.1f%%", hostInfo.MemUsagePercent) }>
+                    <div class="flex items-baseline justify-between mb-2">
+                        <span class={ "text-lg font-bold " + gaugeTextColor(hostInfo.MemUsagePercent) }>{ fmt.Sprintf("%.1f%%", hostInfo.MemUsagePercent) }</span>
+                        <span class="text-xs text-zinc-500">{ hostInfo.UsedMemory } / { hostInfo.TotalMemory }</span>
                     </div>
-                    <div class="gauge-track">
-                        <div class={ "gauge-bar " + gaugeColor(hostInfo.MemUsagePercent) } style={ "width: " + gaugeWidth(hostInfo.MemUsagePercent) }></div>
+                    <div class="h-2 bg-zinc-800 rounded-full overflow-hidden">
+                        <div class={ "h-full rounded-full min-w-[2px] transition-[width] duration-[600ms] ease-in-out " + gaugeBarClass(hostInfo.MemUsagePercent) } style={ "width: " + gaugeWidth(hostInfo.MemUsagePercent) }></div>
                     </div>
                 </div>
             </div>
-            <div class="card card-full">
-                <span class="card-label">Swap Usage</span>
-                <div class="gauge-container" role="progressbar" aria-valuenow={ gaugeWidth(hostInfo.SwapUsagePercent) } aria-valuemin="0" aria-valuemax="100" aria-label={ "Swap usage: " + fmt.Sprintf("%.1f%%", hostInfo.SwapUsagePercent) }>
-                    <div class="gauge-header">
-                        <span class={ "gauge-value " + gaugeColor(hostInfo.SwapUsagePercent) }>{ fmt.Sprintf("%.1f%%", hostInfo.SwapUsagePercent) }</span>
-                        <span class="gauge-sub">{ hostInfo.UsedSwap } / { hostInfo.TotalSwap }</span>
+            <div class="col-span-full bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Swap Usage</span>
+                <div class="w-full" role="progressbar" aria-valuenow={ gaugeWidth(hostInfo.SwapUsagePercent) } aria-valuemin="0" aria-valuemax="100" aria-label={ "Swap usage: " + fmt.Sprintf("%.1f%%", hostInfo.SwapUsagePercent) }>
+                    <div class="flex items-baseline justify-between mb-2">
+                        <span class={ "text-lg font-bold " + gaugeTextColor(hostInfo.SwapUsagePercent) }>{ fmt.Sprintf("%.1f%%", hostInfo.SwapUsagePercent) }</span>
+                        <span class="text-xs text-zinc-500">{ hostInfo.UsedSwap } / { hostInfo.TotalSwap }</span>
                     </div>
-                    <div class="gauge-track">
-                        <div class={ "gauge-bar " + gaugeColor(hostInfo.SwapUsagePercent) } style={ "width: " + gaugeWidth(hostInfo.SwapUsagePercent) }></div>
+                    <div class="h-2 bg-zinc-800 rounded-full overflow-hidden">
+                        <div class={ "h-full rounded-full min-w-[2px] transition-[width] duration-[600ms] ease-in-out " + gaugeBarClass(hostInfo.SwapUsagePercent) } style={ "width: " + gaugeWidth(hostInfo.SwapUsagePercent) }></div>
                     </div>
                 </div>
             </div>
@@ -207,37 +217,37 @@ templ Host(hostInfo model.HostInfo) {
     </section>
 
     <!-- ===== SECTION: DISQUE ===== -->
-    <section class="section" aria-labelledby="section-disk">
-        <h2 class="section-title" id="section-disk">
-            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <section class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 transition-colors hover:border-zinc-700" aria-labelledby="section-disk">
+        <h2 class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 mb-5 pb-3 border-b border-zinc-800" id="section-disk">
+            <svg class="w-4 h-4 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <ellipse cx="12" cy="5" rx="9" ry="3"/>
                 <path d="M21 12c0 1.657-4.03 3-9 3S3 13.657 3 12"/>
                 <path d="M3 5v14c0 1.657 4.03 3 9 3s9-1.343 9-3V5"/>
             </svg>
             Disque
         </h2>
-        <div class="cards-grid">
-            <div class="card">
-                <span class="card-label">Total</span>
-                <span class="card-value text-lg font-semibold">{ hostInfo.TotalDiskSpace }</span>
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Total</span>
+                <span class="text-lg font-semibold text-zinc-200">{ hostInfo.TotalDiskSpace }</span>
             </div>
-            <div class="card">
-                <span class="card-label">Used</span>
-                <span class={ "card-value text-lg font-semibold " + gaugeColor(hostInfo.DiskUsagePercent) }>{ hostInfo.UsedDiskSpace }</span>
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Used</span>
+                <span class={ "text-lg font-semibold " + gaugeTextColor(hostInfo.DiskUsagePercent) }>{ hostInfo.UsedDiskSpace }</span>
             </div>
-            <div class="card">
-                <span class="card-label">Free</span>
-                <span class="card-value text-lg font-semibold text-zinc-300">{ hostInfo.FreeDiskSpace }</span>
+            <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Free</span>
+                <span class="text-lg font-semibold text-zinc-300">{ hostInfo.FreeDiskSpace }</span>
             </div>
-            <div class="card card-full">
-                <span class="card-label">Disk Usage (/ )</span>
-                <div class="gauge-container" role="progressbar" aria-valuenow={ gaugeWidth(hostInfo.DiskUsagePercent) } aria-valuemin="0" aria-valuemax="100" aria-label={ "Disk usage: " + fmt.Sprintf("%.1f%%", hostInfo.DiskUsagePercent) }>
-                    <div class="gauge-header">
-                        <span class={ "gauge-value " + gaugeColor(hostInfo.DiskUsagePercent) }>{ fmt.Sprintf("%.1f%%", hostInfo.DiskUsagePercent) }</span>
-                        <span class="gauge-sub">{ hostInfo.UsedDiskSpace } / { hostInfo.TotalDiskSpace }</span>
+            <div class="col-span-full bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Disk Usage (/)</span>
+                <div class="w-full" role="progressbar" aria-valuenow={ gaugeWidth(hostInfo.DiskUsagePercent) } aria-valuemin="0" aria-valuemax="100" aria-label={ "Disk usage: " + fmt.Sprintf("%.1f%%", hostInfo.DiskUsagePercent) }>
+                    <div class="flex items-baseline justify-between mb-2">
+                        <span class={ "text-lg font-bold " + gaugeTextColor(hostInfo.DiskUsagePercent) }>{ fmt.Sprintf("%.1f%%", hostInfo.DiskUsagePercent) }</span>
+                        <span class="text-xs text-zinc-500">{ hostInfo.UsedDiskSpace } / { hostInfo.TotalDiskSpace }</span>
                     </div>
-                    <div class="gauge-track">
-                        <div class={ "gauge-bar " + gaugeColor(hostInfo.DiskUsagePercent) } style={ "width: " + gaugeWidth(hostInfo.DiskUsagePercent) }></div>
+                    <div class="h-2 bg-zinc-800 rounded-full overflow-hidden">
+                        <div class={ "h-full rounded-full min-w-[2px] transition-[width] duration-[600ms] ease-in-out " + gaugeBarClass(hostInfo.DiskUsagePercent) } style={ "width: " + gaugeWidth(hostInfo.DiskUsagePercent) }></div>
                     </div>
                 </div>
             </div>
@@ -245,19 +255,19 @@ templ Host(hostInfo model.HostInfo) {
     </section>
 
     <!-- ===== SECTION: RÉSEAU ===== -->
-    <section class="section" aria-labelledby="section-network">
-        <h2 class="section-title" id="section-network">
-            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <section class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 transition-colors hover:border-zinc-700" aria-labelledby="section-network">
+        <h2 class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 mb-5 pb-3 border-b border-zinc-800" id="section-network">
+            <svg class="w-4 h-4 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
             </svg>
             Réseau
         </h2>
-        <div class="cards-grid">
-            <div class="card card-full">
-                <span class="card-label">Network Interfaces</span>
-                <div class="iface-list" role="list" aria-label="Network interfaces">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
+            <div class="col-span-full bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4 flex flex-col gap-1.5 transition-colors hover:border-sky-500/30 hover:bg-zinc-800/80">
+                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Network Interfaces</span>
+                <div class="flex flex-wrap gap-2 mt-1" role="list" aria-label="Network interfaces">
                     for _, iface := range hostInfo.NetworkInterfaces {
-                        <span class="iface-badge" role="listitem">{ iface }</span>
+                        <span class="inline-flex items-center px-2.5 py-1 bg-zinc-800 border border-zinc-700 rounded-md text-[13px] font-medium text-sky-400 font-mono" role="listitem">{ iface }</span>
                     }
                 </div>
             </div>
